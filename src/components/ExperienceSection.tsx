@@ -5,23 +5,23 @@ import { Gem, Flame, UtensilsCrossed, Heart } from "lucide-react";
 const features = [
   {
     icon: Gem,
-    title: "Premium Ingredients",
-    description: "Sourced from artisan producers and local farms for unmatched freshness and quality.",
+    title: "Sifatli Mahsulotlar",
+    description: "Eng toza va sifatli mahsulotlar — mahalliy fermerlardan va ishonchli yetkazib beruvchilardan.",
   },
   {
     icon: Flame,
-    title: "Refined Atmosphere",
-    description: "An intimate setting where warm lighting and curated design create the perfect ambiance.",
+    title: "Nafis Muhit",
+    description: "Issiq, qulay va zamonaviy dizayn — har bir tashrif maxsus his etiladi.",
   },
   {
     icon: UtensilsCrossed,
-    title: "Signature Dishes",
-    description: "Each creation tells a story, blending global inspiration with masterful technique.",
+    title: "Maxsus Taomlar",
+    description: "An'anaviy o'zbek retseptlari zamonaviy talqinda — har bir taom san'at asari.",
   },
   {
     icon: Heart,
-    title: "Memorable Service",
-    description: "Attentive, personalized hospitality that makes every guest feel truly welcomed.",
+    title: "Unutilmas Xizmat",
+    description: "Diqqatli va samimiy xizmat — sizni qayta-qayta tashrif buyurishga undaydi.",
   },
 ];
 
@@ -38,10 +38,10 @@ const ExperienceSection = () => {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-gold text-sm tracking-[0.3em] uppercase font-body">The Nihol Way</span>
+          <span className="text-gold text-sm tracking-[0.3em] uppercase font-body">Nihol uslubi</span>
           <div className="gold-separator mx-auto mt-4 mb-6" />
           <h2 className="font-display text-3xl md:text-5xl text-foreground">
-            A Signature Experience
+            Maxsus Tajriba
           </h2>
         </motion.div>
 
@@ -49,12 +49,12 @@ const ExperienceSection = () => {
           {features.map((f, i) => (
             <motion.div
               key={f.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.15 }}
               className="text-center group"
             >
-              <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-gold/30 flex items-center justify-center group-hover:bg-gold/10 transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-gold/30 flex items-center justify-center group-hover:bg-gold/10 group-hover:scale-110 transition-all duration-300">
                 <f.icon className="w-7 h-7 text-gold" strokeWidth={1.5} />
               </div>
               <h3 className="font-display text-lg text-foreground mb-3">{f.title}</h3>

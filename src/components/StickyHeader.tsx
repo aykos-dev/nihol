@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import niholLogo from "@/assets/nihol-logo.png";
+import niholLogo from "@/assets/nihol-coaster.png";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Menu", href: "#menu" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Contact", href: "#contact" },
+  { label: "Bosh sahifa", href: "#home" },
+  { label: "Biz haqimizda", href: "#about" },
+  { label: "Menyu", href: "#menu" },
+  { label: "Galereya", href: "#gallery" },
+  { label: "Aloqa", href: "#contact" },
 ];
 
 const StickyHeader = () => {
@@ -32,11 +32,11 @@ const StickyHeader = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#home">
-          <img src={niholLogo} alt="NIHOL" className="h-10 w-auto" />
+        <a href="#home" className="flex items-center gap-3">
+          <img src={niholLogo} alt="NIHOL" className="h-10 w-auto rounded-sm" />
+          <span className="font-display text-cream text-lg tracking-wider hidden sm:inline">NIHOL</span>
         </a>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
@@ -51,11 +51,10 @@ const StickyHeader = () => {
             href="#contact"
             className="ml-4 border border-gold/50 text-gold px-5 py-2 text-xs tracking-widest uppercase hover:bg-gold hover:text-forest-dark transition-all duration-300"
           >
-            Reserve
+            Band qilish
           </a>
         </nav>
 
-        {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden text-cream"
@@ -69,7 +68,6 @@ const StickyHeader = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <motion.nav
           initial={{ opacity: 0, y: -20 }}
