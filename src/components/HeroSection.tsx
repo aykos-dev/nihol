@@ -5,21 +5,31 @@ import heroFallback from "@/assets/hero-fallback.jpg";
 const HeroSection = () => {
   return (
     <section id="home" className="relative h-screen w-full overflow-hidden">
-      {/* Video / Fallback background */}
+      {/* Video background with fallback */}
       <div className="absolute inset-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={heroFallback}
+          className="w-full h-full object-cover"
+        >
+          <source src="/nihol-hero.mp4" type="video/mp4" />
+        </video>
+        {/* Fallback image if video doesn't load */}
         <img
           src={heroFallback}
           alt="NIHOL Restaurant"
-          className="w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: -1 }}
           width={1920}
           height={1080}
         />
       </div>
 
-      {/* Overlay */}
       <div className="absolute inset-0 gradient-hero-overlay" />
 
-      {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
         <motion.img
           src={niholLogo}
@@ -27,48 +37,47 @@ const HeroSection = () => {
           className="w-48 md:w-64 mb-8"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         />
 
         <motion.h1
           className="font-display text-4xl md:text-6xl lg:text-7xl text-cream tracking-wide"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
         >
-          A Taste of Elegance
+          Nafosatni His Eting
         </motion.h1>
 
         <motion.p
           className="font-editorial text-lg md:text-xl text-cream/70 mt-4 max-w-lg italic"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
         >
-          Where every dish tells a story and every moment becomes a memory
+          Har bir taom — hikoya, har bir lahza — xotira
         </motion.p>
 
         <motion.div
           className="flex flex-col sm:flex-row gap-4 mt-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
+          transition={{ duration: 0.8, delay: 1.0 }}
         >
           <a
             href="#menu"
             className="px-8 py-3 bg-gold/90 text-forest-dark text-sm tracking-widest uppercase font-body font-semibold hover:bg-gold transition-all duration-300"
           >
-            View Menu
+            Menyuni ko'rish
           </a>
           <a
             href="#contact"
             className="px-8 py-3 border border-cream/40 text-cream text-sm tracking-widest uppercase font-body hover:border-gold hover:text-gold transition-all duration-300"
           >
-            Book a Table
+            Joy band qilish
           </a>
         </motion.div>
 
-        {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
@@ -76,7 +85,7 @@ const HeroSection = () => {
           transition={{ delay: 1.5 }}
         >
           <div className="flex flex-col items-center gap-2">
-            <span className="text-cream/40 text-xs tracking-widest uppercase font-body">Scroll</span>
+            <span className="text-cream/40 text-xs tracking-widest uppercase font-body">Pastga</span>
             <motion.div
               className="w-px h-8 bg-gold/50"
               animate={{ scaleY: [1, 0.5, 1] }}
