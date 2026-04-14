@@ -63,7 +63,15 @@ const RoomServicePage = () => {
               <span className="text-gold text-sm tracking-[0.3em] uppercase font-body mb-2">Tanlangan xona</span>
               <h1 className="font-display text-3xl md:text-4xl text-cream mb-2">{room.name}</h1>
               <p className="font-editorial text-cream/50 italic mb-1">{room.description}</p>
-              <p className="font-body text-cream/40 text-sm">{room.capacity}</p>
+              <p className="font-body text-cream/40 text-sm mb-6">{room.capacity}</p>
+
+              {/* Prominent phone number */}
+              <div className="bg-gold/10 border border-gold/30 rounded-sm p-4 mb-4">
+                <p className="font-body text-cream/60 text-xs tracking-wider uppercase mb-1">Operator raqami</p>
+                <a href={`tel:${phoneNumber}`} className="font-display text-gold text-2xl hover:text-gold/80 transition-colors">
+                  +998 90 920 24 54
+                </a>
+              </div>
             </div>
           </div>
 
