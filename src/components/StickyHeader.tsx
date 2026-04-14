@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import niholLogo from "@/assets/nihol-coaster.png";
+import niholLogo from "@/assets/nihol-logo.png";
 
 const navLinks = [
   { label: "Bosh sahifa", href: "#home" },
   { label: "Biz haqimizda", href: "#about" },
   { label: "Menyu", href: "#menu" },
+  { label: "Xonalar", href: "#rooms" },
   { label: "Galereya", href: "#gallery" },
   { label: "Aloqa", href: "#contact" },
 ];

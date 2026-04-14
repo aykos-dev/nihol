@@ -2,6 +2,7 @@ import StickyHeader from "@/components/StickyHeader";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import MenuSection from "@/components/MenuSection";
+import RoomSection from "@/components/RoomSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import GallerySection from "@/components/GallerySection";
 import ContactSection from "@/components/ContactSection";
@@ -14,6 +15,7 @@ const Index = () => {
       <HeroSection />
       <AboutSection />
       <MenuSection />
+      <RoomSection />
       <ExperienceSection />
       <GallerySection />
       <ContactSection />
