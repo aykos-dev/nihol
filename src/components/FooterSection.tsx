@@ -3,7 +3,7 @@ import { Instagram, Facebook, Send } from "lucide-react";
 
 const FooterSection = () => {
   return (
-    <footer className="bg-forest-dark border-t border-cream/10 py-16">
+    <footer className="bg-forest-dark border-t border-accent/10 py-16">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="flex flex-col items-center text-center">
           <img src={niholLogo} alt="NIHOL" className="h-12 w-auto mb-4" loading="lazy" />
