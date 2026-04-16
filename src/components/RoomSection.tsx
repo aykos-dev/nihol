@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import patternBg from "@/assets/pattern-bg.png";
 import room1 from "@/assets/room-1.jpg";
 import room2 from "@/assets/room-2.jpg";
 import room3 from "@/assets/room-3.jpg";
@@ -25,8 +26,13 @@ const RoomSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="rooms" className="py-24 md:py-32 bg-cream">
-      <div className="container mx-auto px-6 max-w-6xl" ref={ref}>
+    <section id="rooms" className="py-24 md:py-32 bg-cream relative overflow-hidden">
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+      />
+
+      <div className="container mx-auto px-6 max-w-6xl relative z-10" ref={ref}>
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 40 }}
@@ -41,47 +47,67 @@ const RoomSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {rooms.map((room, i) => (
-            <motion.div
-              key={room.id}
-              className="group"
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-            >
-              <div className="bg-forest-dark rounded-sm overflow-hidden">
-                <div className="relative overflow-hidden aspect-[3/2]">
-                  <img
-                    src={room.image}
-                    alt={room.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                    width={768}
-                    height={512}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/60 to-transparent" />
-                  <div className="absolute top-4 right-4 bg-gold/90 text-forest-dark px-3 py-1 text-xs font-body tracking-wider uppercase">
-                    {room.capacity}
-                  </div>
-                </div>
-                <div className="p-5">
-                  <h3 className="font-display text-xl text-cream mb-1">{room.name}</h3>
-                  <p className="font-editorial text-sm text-cream/50 italic mb-4">{room.description}</p>
-                  <button
-                    onClick={() => navigate(`/room-service/${room.id}`)}
-                    className="w-full px-6 py-2.5 border border-gold/50 text-gold text-sm tracking-widest uppercase font-body hover:bg-gold hover:text-forest-dark transition-all duration-300"
-                  >
-                    Xonani tanlash
-                  </button>
-                </div>
-              </div>
-            </motion.div>
+        {/* Row 1: 4 items */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6 mb-5 md:mb-6">
+          {rooms.slice(0, 4).map((room, i) => (
+            <RoomCard key={room.id} room={room} i={i} inView={inView} onSelect={() => navigate(`/room-service/${room.id}`)} />
+          ))}
+        </div>
+        {/* Row 2: remaining items centered */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+          {rooms.slice(4).map((room, i) => (
+            <RoomCard key={room.id} room={room} i={i + 4} inView={inView} onSelect={() => navigate(`/room-service/${room.id}`)} />
           ))}
         </div>
       </div>
     </section>
   );
 };
+
+const RoomCard = ({
+  room,
+  i,
+  inView,
+  onSelect,
+}: {
+  room: typeof rooms[0];
+  i: number;
+  inView: boolean;
+  onSelect: () => void;
+}) => (
+  <motion.div
+    className="group"
+    initial={{ opacity: 0, y: 30 }}
+    animate={inView ? { opacity: 1, y: 0 } : {}}
+    transition={{ duration: 0.6, delay: i * 0.08 }}
+  >
+    <div className="bg-forest-dark rounded-sm overflow-hidden">
+      <div className="relative overflow-hidden aspect-[3/2]">
+        <img
+          src={room.image}
+          alt={room.name}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
+          width={768}
+          height={512}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/60 to-transparent" />
+        <div className="absolute top-3 right-3 bg-gold/90 text-forest-dark px-2.5 py-0.5 text-xs font-body tracking-wider uppercase">
+          {room.capacity}
+        </div>
+      </div>
+      <div className="p-4">
+        <h3 className="font-display text-lg text-cream mb-0.5">{room.name}</h3>
+        <p className="font-editorial text-xs text-cream/50 italic mb-3">{room.description}</p>
+        <button
+          onClick={onSelect}
+          className="w-full px-4 py-2 border border-gold/50 text-gold text-xs tracking-widest uppercase font-body hover:bg-gold hover:text-forest-dark transition-all duration-300"
+        >
+          Xonani tanlash
+        </button>
+      </div>
+    </div>
+  </motion.div>
+);
 
 export default RoomSection;
