@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Phone, MapPin, Clock, Send } from "lucide-react";
 
-const InstagramIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+const InstagramIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className={className}>
     <rect x="2" y="2" width="20" height="20" rx="5" />
     <circle cx="12" cy="12" r="5" />
     <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
@@ -67,27 +67,25 @@ const ContactSection = () => {
               </div>
             </div>
 
-            {/* Social icons */}
-            <div className="flex items-center gap-5 pt-4">
+            {/* Social icons - small & clickable */}
+            <div className="flex items-center gap-4 pt-4">
               <a
                 href="https://t.me/nihol_restaurant"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-cream/50 hover:text-gold transition-colors"
+                className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/50 hover:text-gold hover:border-gold transition-colors"
                 aria-label="Telegram"
               >
-                <Send className="w-5 h-5" strokeWidth={1.5} />
-                <span className="font-body text-sm">Telegram</span>
+                <Send className="w-4 h-4" strokeWidth={1.5} />
               </a>
               <a
                 href="https://instagram.com/nihol_restaurant"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-cream/50 hover:text-gold transition-colors"
+                className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/50 hover:text-gold hover:border-gold transition-colors"
                 aria-label="Instagram"
               >
-                <InstagramIcon />
-                <span className="font-body text-sm">Instagram</span>
+                <InstagramIcon className="w-4 h-4" />
               </a>
             </div>
           </motion.div>
