@@ -7,14 +7,16 @@ import room3 from "@/assets/room-3.jpg";
 import room4 from "@/assets/room-4.jpg";
 import room5 from "@/assets/room-5.jpg";
 import room6 from "@/assets/room-6.jpg";
+import room7 from "@/assets/room-7.jpg";
 
 export const rooms = [
-  { id: 1, name: "Xona 1", description: "4-6 kishilik xususiy xona", image: room1, capacity: "4-6 kishi" },
-  { id: 2, name: "Xona 2", description: "6-8 kishilik zamonaviy xona", image: room2, capacity: "6-8 kishi" },
-  { id: 3, name: "Xona 3", description: "8-10 kishilik hashamatli xona", image: room3, capacity: "8-10 kishi" },
-  { id: 4, name: "Xona 4", description: "12-20 kishilik VIP xona", image: room4, capacity: "12-20 kishi" },
-  { id: 5, name: "Xona 5", description: "6-10 kishilik qulay xona", image: room5, capacity: "6-10 kishi" },
-  { id: 6, name: "Xona 6", description: "10-14 kishilik bayram xonasi", image: room6, capacity: "10-14 kishi" },
+  { id: 1, name: "Xona 1", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room1, capacity: "10–14 kishi" },
+  { id: 2, name: "Xona 2", description: "Keng va zamonaviy xona", image: room2, capacity: "15–18 kishi" },
+  { id: 3, name: "Xona 3", description: "Biznes uchrashuvlar uchun ideal", image: room3, capacity: "15–18 kishi" },
+  { id: 4, name: "Xona 4", description: "Yoqimli muhitdagi xona", image: room4, capacity: "10–12 kishi" },
+  { id: 5, name: "Xona 5", description: "Do'stlar davrasiga mo'ljallangan", image: room5, capacity: "10–12 kishi" },
+  { id: 6, name: "Xona 6", description: "Shinam va xususiy xona", image: room6, capacity: "6–8 kishi" },
+  { id: 7, name: "Xona 7", description: "Bayramlar uchun hashamatli xona", image: room7, capacity: "10–12 kishi" },
 ];
 
 const RoomSection = () => {
