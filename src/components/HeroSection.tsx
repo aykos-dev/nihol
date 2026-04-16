@@ -1,32 +1,62 @@
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import niholLogo from "@/assets/nihol-logo.png";
 import heroFallback from "@/assets/hero-fallback.jpg";
 
 const HeroSection = () => {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleCanPlay = () => setVideoLoaded(true);
+    const handleError = () => setVideoError(true);
+
+    video.addEventListener("canplaythrough", handleCanPlay);
+    video.addEventListener("error", handleError);
+
+    // Start loading
+    video.load();
+
+    return () => {
+      video.removeEventListener("canplaythrough", handleCanPlay);
+      video.removeEventListener("error", handleError);
+    };
+  }, []);
+
   return (
     <section id="home" className="relative h-screen w-full overflow-hidden">
-      {/* Video background with fallback */}
-      <div className="absolute inset-0">
+      {/* Preload fallback shown instantly */}
+      <img
+        src={heroFallback}
+        alt="NIHOL Restaurant"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+          videoLoaded && !videoError ? "opacity-0" : "opacity-100"
+        }`}
+        width={1920}
+        height={1080}
+        fetchPriority="high"
+      />
+
+      {/* Video - fades in when ready */}
+      {!videoError && (
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          poster={heroFallback}
-          className="w-full h-full object-cover"
+          preload="auto"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoLoaded ? "opacity-100" : "opacity-0"
+          }`}
         >
           <source src="/nihol-hero.mp4" type="video/mp4" />
         </video>
-        {/* Fallback image if video doesn't load */}
-        <img
-          src={heroFallback}
-          alt="NIHOL Restaurant"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: -1 }}
-          width={1920}
-          height={1080}
-        />
-      </div>
+      )}
 
       <div className="absolute inset-0 gradient-hero-overlay" />
 

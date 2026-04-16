@@ -1,24 +1,30 @@
 import niholLogo from "@/assets/nihol-logo.png";
-import { Instagram, Facebook, Send } from "lucide-react";
+import { Send } from "lucide-react";
+
+const InstagramIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+    <rect x="2" y="2" width="20" height="20" rx="5" />
+    <circle cx="12" cy="12" r="5" />
+    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
 
 const FooterSection = () => {
   return (
-    <footer className="bg-forest-dark border-t border-accent/10 py-16">
+    <footer className="bg-forest-dark border-t border-accent/10 py-12">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="flex flex-col items-center text-center">
-          <img src={niholLogo} alt="NIHOL" className="h-12 w-auto mb-4" loading="lazy" />
-          <p className="font-editorial text-cream/40 italic text-sm mb-2">
-            — kafe va restoran —
-          </p>
-          <p className="font-editorial text-cream/30 text-xs mb-8">
-            Nafosatni his eting
+          <img src={niholLogo} alt="NIHOL" className="h-10 w-auto mb-3" loading="lazy" />
+          <p className="font-editorial text-cream/40 italic text-sm mb-6">
+            Kafe va Restoran
           </p>
 
-          <nav className="flex flex-wrap justify-center gap-6 mb-8">
+          <nav className="flex flex-wrap justify-center gap-6 mb-6">
             {[
               { label: "Bosh sahifa", href: "#home" },
               { label: "Biz haqimizda", href: "#about" },
               { label: "Menyu", href: "#menu" },
+              { label: "Xonalar", href: "#rooms" },
               { label: "Galereya", href: "#gallery" },
               { label: "Aloqa", href: "#contact" },
             ].map((link) => (
@@ -32,19 +38,16 @@ const FooterSection = () => {
             ))}
           </nav>
 
-          <div className="flex gap-5 mb-10">
-            <a href="#" className="text-cream/30 hover:text-gold transition-colors" aria-label="Instagram">
-              <Instagram className="w-5 h-5" strokeWidth={1.5} />
-            </a>
-            <a href="#" className="text-cream/30 hover:text-gold transition-colors" aria-label="Facebook">
-              <Facebook className="w-5 h-5" strokeWidth={1.5} />
-            </a>
-            <a href="#" className="text-cream/30 hover:text-gold transition-colors" aria-label="Telegram">
+          <div className="flex gap-5 mb-8">
+            <a href="https://t.me/nihol_restaurant" target="_blank" rel="noopener noreferrer" className="text-cream/30 hover:text-gold transition-colors" aria-label="Telegram">
               <Send className="w-5 h-5" strokeWidth={1.5} />
+            </a>
+            <a href="https://instagram.com/nihol_restaurant" target="_blank" rel="noopener noreferrer" className="text-cream/30 hover:text-gold transition-colors" aria-label="Instagram">
+              <InstagramIcon />
             </a>
           </div>
 
-          <div className="w-full h-px bg-cream/10 mb-6" />
+          <div className="w-full h-px bg-cream/10 mb-5" />
           <p className="text-cream/20 text-xs font-body tracking-wider">
             © {new Date().getFullYear()} Nihol. Barcha huquqlar himoyalangan.
           </p>
