@@ -27,7 +27,6 @@ const RoomServicePage = () => {
 
   return (
     <div className="min-h-screen bg-forest-dark">
-      {/* Header */}
       <div className="border-b border-cream/10 py-4 px-6">
         <div className="container mx-auto max-w-4xl flex items-center justify-between">
           <button
@@ -48,7 +47,6 @@ const RoomServicePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {/* Room info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <div className="overflow-hidden rounded-sm">
               <img
@@ -65,7 +63,6 @@ const RoomServicePage = () => {
               <p className="font-editorial text-cream/50 italic mb-1">{room.description}</p>
               <p className="font-body text-cream/40 text-sm mb-6">{room.capacity}</p>
 
-              {/* Prominent phone number */}
               <div className="bg-gold/10 border border-gold/30 rounded-sm p-4 mb-4">
                 <p className="font-body text-cream/60 text-xs tracking-wider uppercase mb-1">Operator raqami</p>
                 <a href={`tel:${phoneNumber}`} className="font-display text-gold text-2xl hover:text-gold/80 transition-colors">
@@ -75,7 +72,6 @@ const RoomServicePage = () => {
             </div>
           </div>
 
-          {/* Service request */}
           <div className="border border-cream/10 rounded-sm p-6 md:p-8 mb-8">
             <h2 className="font-display text-xl text-cream mb-2">Xona xizmati</h2>
             <p className="font-editorial text-cream/50 italic text-sm mb-6">
