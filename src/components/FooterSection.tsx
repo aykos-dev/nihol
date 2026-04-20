@@ -14,9 +14,9 @@ const FooterSection = () => {
     <footer className="bg-forest-dark border-t border-accent/10 py-12">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="flex flex-col items-center text-center">
-          <img src={niholLogo} alt="NIHOL" className="h-10 w-auto mb-3" loading="lazy" />
+          <img src={niholLogo} alt="NIHOL" className="h-14 md:h-16 w-auto mb-3" loading="lazy" />
           <p className="font-editorial text-cream/40 italic text-sm mb-6">
-            Kafe va Restoran
+            Restourant
           </p>
 
           <nav className="flex flex-wrap justify-center gap-6 mb-6">
@@ -38,19 +38,14 @@ const FooterSection = () => {
             ))}
           </nav>
 
-          <div className="flex gap-5 mb-8">
-            <a href="https://t.me/nihol_restaurant" target="_blank" rel="noopener noreferrer" className="text-cream/30 hover:text-gold transition-colors" aria-label="Telegram">
+          <div className="flex gap-5 mb-5">
+            <a href="https://t.me/niholjoja_bot" target="_blank" rel="noopener noreferrer" className="text-cream/30 hover:text-gold transition-colors" aria-label="Telegram">
               <Send className="w-5 h-5" strokeWidth={1.5} />
             </a>
-            <a href="https://instagram.com/nihol_restaurant" target="_blank" rel="noopener noreferrer" className="text-cream/30 hover:text-gold transition-colors" aria-label="Instagram">
+            <a href="https://www.instagram.com/nihol_restaurant__?igsh=cms4a3Rsam40eTBq" target="_blank" rel="noopener noreferrer" className="text-cream/30 hover:text-gold transition-colors" aria-label="Instagram">
               <InstagramIcon />
             </a>
           </div>
-
-          <div className="w-full h-px bg-cream/10 mb-5" />
-          <p className="text-cream/20 text-xs font-body tracking-wider">
-            © {new Date().getFullYear()} Nihol. Barcha huquqlar himoyalangan.
-          </p>
         </div>
       </div>
     </footer>

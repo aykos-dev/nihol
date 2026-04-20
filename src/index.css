@@ -64,6 +64,21 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Soft pattern background across the whole website (premium, non-distracting). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("./assets/pattern-bg.png");
+    background-size: 400px 400px;
+    background-repeat: repeat;
+    opacity: 0.015;
+    pointer-events: none;
+    z-index: -1;
   }
 
   html {
@@ -141,5 +156,30 @@
     width: 60px;
     height: 1px;
     background: linear-gradient(90deg, transparent, hsl(var(--gold)), transparent);
+  }
+
+  /* Menu category modal — scroll bar matches site greens (not default grey) */
+  .menu-modal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--forest-light)) hsl(var(--forest-dark));
+  }
+
+  .menu-modal-scroll::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .menu-modal-scroll::-webkit-scrollbar-track {
+    background: hsl(var(--forest-dark));
+    border-radius: 3px;
+  }
+
+  .menu-modal-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--forest-light));
+    border-radius: 3px;
+    border: 2px solid hsl(var(--forest-dark));
+  }
+
+  .menu-modal-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--forest));
   }
 }

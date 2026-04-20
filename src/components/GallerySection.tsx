@@ -1,53 +1,84 @@
-import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useInView } from "framer-motion";
-import interiorImg from "@/assets/nihol-interior.png";
-import buildingImg from "@/assets/nihol-building.jpg";
-import coasterImg from "@/assets/nihol-coaster.png";
-import dish1 from "@/assets/dish-1.jpg";
-import room1 from "@/assets/room-1.jpg";
-import room2 from "@/assets/room-2.jpg";
-import room3 from "@/assets/room-3.jpg";
-import room4 from "@/assets/room-4.jpg";
-import room5 from "@/assets/room-5.jpg";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import patternBg from "@/assets/pattern-bg.png";
 
-const allImages = [
-  { src: buildingImg, alt: "Nihol binosi" },
-  { src: interiorImg, alt: "Restoran ichki ko'rinishi" },
-  { src: dish1, alt: "Taom" },
-  { src: coasterImg, alt: "Nihol brendi" },
-  { src: room1, alt: "Xona 1" },
-  { src: room2, alt: "Xona 2" },
-  { src: room3, alt: "Xona 3" },
-  { src: room4, alt: "Xona 4" },
-  { src: room5, alt: "Xona 5" },
-];
+type GalleryImage = { src: string; alt: string };
 
-const GallerySection = () => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [startIdx, setStartIdx] = useState(0);
-  const visibleCount = 5;
+const galleryModules = import.meta.glob<string>("../assets/gallery/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp,WEBP}", {
+  eager: true,
+  import: "default",
+});
 
-  const advance = useCallback(() => {
-    setStartIdx((prev) => (prev + 1) % allImages.length);
-  }, []);
+const galleryImages: GalleryImage[] = Object.entries(galleryModules)
+  .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: "base" }))
+  .map(([path, src], index) => {
+    const stem = path.split("/").pop()?.replace(/\.[^.]+$/, "") ?? `gallery-${index + 1}`;
+    return { src, alt: `Galereya ${stem}` };
+  });
+
+function rotateImages(offset: number): GalleryImage[] {
+  if (galleryImages.length === 0) return [];
+  const normalized = ((offset % galleryImages.length) + galleryImages.length) % galleryImages.length;
+  return [...galleryImages.slice(normalized), ...galleryImages.slice(0, normalized)];
+}
+
+const featuredImages = rotateImages(0);
+const small1 = rotateImages(1);
+const small2 = rotateImages(2);
+const small3 = rotateImages(3);
+const small4 = rotateImages(4);
+
+function GalleryCard({
+  images,
+  className,
+  isPlaying,
+  autoMs,
+  eager,
+  startIndex = 0,
+}: {
+  images: GalleryImage[];
+  className: string;
+  isPlaying: boolean;
+  autoMs: number;
+  eager?: boolean;
+  startIndex?: number;
+}) {
+  const [idx, setIdx] = useState(startIndex % Math.max(images.length, 1));
+  const current = images[idx] ?? images[0];
 
   useEffect(() => {
-    const timer = setInterval(advance, 3000);
-    return () => clearInterval(timer);
-  }, [advance]);
+    if (!isPlaying || images.length <= 1) return;
 
-  const getVisible = () => {
-    const items = [];
-    for (let i = 0; i < visibleCount; i++) {
-      const idx = (startIdx + i) % allImages.length;
-      items.push({ ...allImages[idx], key: `${startIdx}-${i}` });
-    }
-    return items;
-  };
+    const timer = window.setInterval(() => {
+      setIdx((prev) => (prev + 1) % images.length);
+    }, autoMs);
 
-  const visible = getVisible();
+    return () => window.clearInterval(timer);
+  }, [autoMs, images, isPlaying]);
+
+  return (
+    <div className={className}>
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current.src}
+          src={current.src}
+          alt={current.alt}
+          className="w-full h-full object-cover rounded-sm"
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          initial={{ opacity: 0, y: 10, scale: 1.01 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -10, scale: 0.99 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+        />
+      </AnimatePresence>
+    </div>
+  );
+}
+
+const GallerySection = () => {
+  const ref = useRef<HTMLElement | null>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section id="gallery" className="py-24 md:py-32 bg-cream-dark relative overflow-hidden">
@@ -56,7 +87,7 @@ const GallerySection = () => {
         style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
       />
 
-      <div className="container mx-auto px-6 max-w-6xl relative z-10" ref={ref}>
+      <div className="container mx-auto px-6 max-w-7xl relative z-10" ref={ref as React.RefObject<HTMLDivElement>}>
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 40 }}
@@ -68,52 +99,87 @@ const GallerySection = () => {
           <h2 className="font-display text-3xl md:text-5xl text-foreground">Galereya</h2>
         </motion.div>
 
-        {/* 5 images with individual rotation animation */}
-        <div className="flex gap-4 justify-center items-center">
-          {visible.map((img, i) => {
-            const isCenter = i === 2;
-            const rotations = [-4, -2, 0, 2, 4];
-            return (
+        <div className="grid grid-cols-1 md:grid-cols-10 gap-5 md:gap-7 items-start">
+          <div className="md:col-span-6">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.12 }}
+              whileHover={{ y: -4 }}
+            >
+              <GalleryCard
+                images={featuredImages}
+                isPlaying={inView}
+                autoMs={7600}
+                startIndex={0}
+                eager
+                className="relative overflow-hidden rounded-sm border border-gold/25 shadow-2xl bg-forest-dark aspect-[16/9]"
+              />
+            </motion.div>
+          </div>
+
+          <div className="md:col-span-4">
+            <div className="grid grid-cols-2 grid-rows-2 gap-3 md:gap-4">
               <motion.div
-                key={img.key}
-                className={`relative overflow-hidden rounded-sm flex-shrink-0 ${
-                  isCenter ? "w-1/4 z-10" : "w-1/5"
-                }`}
-                initial={{ opacity: 0, rotate: rotations[i] * 2, scale: 0.9 }}
-                animate={{
-                  opacity: 1,
-                  rotate: rotations[i],
-                  scale: isCenter ? 1.05 : 1,
-                }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                style={{ transformOrigin: "center bottom" }}
+                initial={{ opacity: 0, y: 22 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.55, delay: 0.2 }}
+                whileHover={{ y: -3 }}
               >
-                <div className={`aspect-[3/4] ${isCenter ? "shadow-2xl ring-2 ring-gold/20" : "shadow-lg"}`}>
-                  <img
-                    src={img.src}
-                    alt={img.alt}
-                    className="w-full h-full object-cover rounded-sm"
-                    loading="lazy"
-                  />
-                </div>
+                <GalleryCard
+                  images={small1}
+                  isPlaying={inView}
+                  autoMs={8400}
+                  startIndex={1}
+                  className="relative overflow-hidden rounded-sm border border-gold/25 bg-forest-dark shadow-xl aspect-[4/3]"
+                />
               </motion.div>
-            );
-          })}
+              <motion.div
+                initial={{ opacity: 0, y: 22 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.55, delay: 0.28 }}
+                whileHover={{ y: -3 }}
+              >
+                <GalleryCard
+                  images={small2}
+                  isPlaying={inView}
+                  autoMs={9000}
+                  startIndex={2}
+                  className="relative overflow-hidden rounded-sm border border-gold/25 bg-forest-dark shadow-xl aspect-[4/3]"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 22 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.55, delay: 0.36 }}
+                whileHover={{ y: -3 }}
+              >
+                <GalleryCard
+                  images={small3}
+                  isPlaying={inView}
+                  autoMs={9600}
+                  startIndex={0}
+                  className="relative overflow-hidden rounded-sm border border-gold/25 bg-forest-dark shadow-xl aspect-[4/3]"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 22 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.55, delay: 0.44 }}
+                whileHover={{ y: -3 }}
+              >
+                <GalleryCard
+                  images={small4}
+                  isPlaying={inView}
+                  autoMs={10200}
+                  startIndex={1}
+                  className="relative overflow-hidden rounded-sm border border-gold/25 bg-forest-dark shadow-xl aspect-[4/3]"
+                />
+              </motion.div>
+            </div>
+          </div>
         </div>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-2 mt-8">
-          {allImages.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setStartIdx(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === startIdx ? "bg-gold w-6" : "bg-foreground/20 hover:bg-foreground/40"
-              }`}
-              aria-label={`Rasm ${i + 1}`}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );

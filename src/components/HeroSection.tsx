@@ -30,7 +30,7 @@ const HeroSection = () => {
   return (
     <section id="home" className="relative h-screen w-full overflow-hidden">
       {/* Preload fallback shown instantly */}
-      <img
+      {/* <img
         src={heroFallback}
         alt="NIHOL Restaurant"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
@@ -39,7 +39,7 @@ const HeroSection = () => {
         width={1920}
         height={1080}
         fetchPriority="high"
-      />
+      /> */}
 
       {/* Video - fades in when ready */}
       {!videoError && (
@@ -50,7 +50,7 @@ const HeroSection = () => {
           loop
           playsInline
           preload="auto"
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+          className={`absolute inset-0 w-full h-full object-cover object-[center_35%] md:object-[center_30%] transition-opacity duration-1000 ${
             videoLoaded ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -71,12 +71,12 @@ const HeroSection = () => {
         />
 
         <motion.h1
-          className="font-display text-4xl md:text-6xl lg:text-7xl text-cream tracking-wide"
+          className="font-display text-4xl md:text-6xl lg:text-6xl text-cream tracking-wide"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Nafosatni His Eting
+          Oilaviy premium restoran
         </motion.h1>
 
         <motion.p
@@ -85,7 +85,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
         >
-          Har bir taom — hikoya, har bir lahza — xotira
+          Mazali taomlar & shinam xonalar
         </motion.p>
 
         <motion.div

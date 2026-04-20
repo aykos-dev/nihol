@@ -1,11 +1,14 @@
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import interiorImg from "@/assets/nihol-interior.png";
+import buildingImg from "@/assets/gallery/nihol-building.jpg";
 
 const AboutSection = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
   const imgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   return (
@@ -21,9 +24,9 @@ const AboutSection = () => {
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
             <img
-              src={interiorImg}
+              src={buildingImg}
               alt="Nihol restoran ichki ko'rinishi"
-              className="w-full h-[400px] md:h-[500px] object-cover"
+              className="w-full h-[460px] md:h-[620px] object-cover"
               loading="lazy"
             />
             <div className="absolute inset-0 bg-forest-dark/10" />
@@ -35,24 +38,38 @@ const AboutSection = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
           >
-            <span className="text-gold text-sm tracking-[0.3em] uppercase font-body">Biz haqimizda</span>
+            <span className="text-gold text-sm tracking-[0.3em] uppercase font-body">
+              Biz haqimizda
+            </span>
             <div className="gold-separator mt-4 mb-6" />
             <h2 className="font-display text-3xl md:text-5xl text-foreground mb-8">
-              Nihol — Kafe va Restoran
+              Nihol — Restourant
             </h2>
             <p className="font-editorial text-lg text-muted-foreground leading-relaxed mb-6">
-              Nihol — bu nafaqat restoran, balki an'anaviy o'zbek oshxonasining zamonaviy talqini. 
-              Biz har bir taomni eng sifatli mahsulotlardan, an'anaviy retseptlar asosida 
-              tayyorlaymiz.
+              Biz sizga o‘zimizning “NIHOL” restoranimizni taqdim etishdan
+              mamnunmiz. Bizning muassasamiz tarixi 2005-yildan boshlanadi.
+              Asosiy taomimiz bo‘lgan “Tovuq Tabaka” uchun firmaviy retsept
+              mualliflik texnologiyasi asosida tayyorlanadi va restoran
+              faoliyati davomida nafaqat Toshkent aholisi, balki poytaxt
+              mehmonlari orasida ham katta mashhurlikka erishgan.
             </p>
             <p className="font-editorial text-lg text-muted-foreground leading-relaxed mb-6">
-              Bizning issiq muhit, diqqatga sazovor xizmat va unutilmas ta'mlar sizni qayta-qayta 
-              tashrif buyurishga undaydi. Nihol — bu mazali taom, iliq suhbat va yoqimli lahzalar 
-              uchun joy.
+              Shuni faxr bilan aytamizki, biz tovuqlarni Toshkent shahri
+              atrofidagi o‘z fermalarimizda yetishtiramiz. Bu esa
+              mahsulotlarimizning sifati va doimo yangi bo‘lishini ta’minlaydi,
+              ayniqsa yozning issiq kunlarida bu juda muhim. Har qanday
+              oshxonaning yuragi — bu oshpazlar jamoasidir. “NIHOL”da
+              poytaxtdagi mashhur restoranlarda, jumladan “Anhor” restoranida
+              ishlagan tajribali oshpazlar faoliyat yuritadi. Oshpazlarimiz
+              fikricha, haqiqiy oshxonaning asosiy fazilatlari —
+              professionallik, samimiylik, ijobiy kayfiyat va o‘z ishiga bo‘lgan
+              muhabbatdir.
             </p>
             <div className="flex items-center gap-4 mt-8">
               <div className="w-12 h-px bg-gold/50" />
-              <span className="font-editorial italic text-gold text-sm">nihol.uz</span>
+              {/* <span className="font-editorial italic text-gold text-sm">
+                nihol.uz
+              </span> */}
             </div>
           </motion.div>
         </div>

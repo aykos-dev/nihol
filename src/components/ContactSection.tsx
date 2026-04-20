@@ -40,7 +40,7 @@ const ContactSection = () => {
               <MapPin className="w-5 h-5 text-gold mt-1 flex-shrink-0" strokeWidth={1.5} />
               <div>
                 <h3 className="font-display text-cream text-lg mb-1">Manzil</h3>
-                <p className="font-body text-cream/50 text-sm">Toshkent shahar, Yunusobod tumani</p>
+                <p className="font-body text-cream/50 text-sm">Toshkent shahar, Shifonur, Kichik halka yo'li 8</p>
               </div>
             </div>
 
@@ -49,9 +49,9 @@ const ContactSection = () => {
               <div>
                 <h3 className="font-display text-cream text-lg mb-2">Telefon raqamlar</h3>
                 <div className="space-y-1">
-                  <a href="tel:+998909202454" className="block font-body text-cream/60 text-sm hover:text-gold transition-colors">+998 90 920 24 54</a>
-                  <a href="tel:+998901234567" className="block font-body text-cream/60 text-sm hover:text-gold transition-colors">+998 90 123 45 67</a>
-                  <a href="tel:+998712345678" className="block font-body text-cream/60 text-sm hover:text-gold transition-colors">+998 71 234 56 78</a>
+                  <a href="tel:+712469536" className="block font-body text-cream/60 text-sm hover:text-gold transition-colors">+71 246 95 36</a>
+                  <a href="tel:+712469536" className="block font-body text-cream/60 text-sm hover:text-gold transition-colors">+71 246 95 36</a>
+                  <a href="tel:+712469536" className="block font-body text-cream/60 text-sm hover:text-gold transition-colors">+71 246 95 36</a>
                 </div>
               </div>
             </div>
@@ -59,10 +59,9 @@ const ContactSection = () => {
             <div className="flex items-start gap-4">
               <Clock className="w-5 h-5 text-gold mt-1 flex-shrink-0" strokeWidth={1.5} />
               <div>
-                <h3 className="font-display text-cream text-lg mb-1">Ish vaqti</h3>
+                <h3 className="font-display text-cream text-lg mb-1">Ish vaqti : 10:00 – 22:00 </h3>
                 <p className="font-body text-cream/50 text-sm">
-                  Dush – Juma: 10:00 – 23:00<br />
-                  Shanba – Yakshanba: 10:00 – 00:00
+                  
                 </p>
               </div>
             </div>
@@ -70,7 +69,7 @@ const ContactSection = () => {
             {/* Social icons - small & clickable */}
             <div className="flex items-center gap-4 pt-4">
               <a
-                href="https://t.me/nihol_restaurant"
+                href="https://t.me/niholjoja_bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/50 hover:text-gold hover:border-gold transition-colors"
@@ -79,7 +78,7 @@ const ContactSection = () => {
                 <Send className="w-4 h-4" strokeWidth={1.5} />
               </a>
               <a
-                href="https://instagram.com/nihol_restaurant"
+                href="https://www.instagram.com/nihol_restaurant__?igsh=cms4a3Rsam40eTBq"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full border border-cream/20 flex items-center justify-center text-cream/50 hover:text-gold hover:border-gold transition-colors"
@@ -98,7 +97,7 @@ const ContactSection = () => {
           >
             <div className="w-full h-[400px] rounded-sm overflow-hidden border border-cream/10">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.5!2d69.25!3d41.33!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDE5JzQ4LjAiTiA2OcKwMTUnMDAuMCJF!5e0!3m2!1sen!2s!4v1"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2589.347619315124!2d69.21792254627728!3d41.35088109566123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8c6ae15c39f1%3A0x5a1fe781383ca556!2z0J3QuNGF0LDQuw!5e0!3m2!1sru!2s!4v1776596104180!5m2!1sru!2s"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

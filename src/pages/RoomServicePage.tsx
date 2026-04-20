@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, ArrowLeft, MessageCircle } from "lucide-react";
+import { Phone, ArrowLeft, MessageCircle, Clock3, CircleCheck, ShieldCheck, UtensilsCrossed, Users } from "lucide-react";
 import { rooms } from "@/components/RoomSection";
 import niholLogo from "@/assets/nihol-logo.png";
+import patternBg from "@/assets/pattern-bg.png";
 
 const RoomServicePage = () => {
   const { roomId } = useParams();
@@ -22,13 +23,17 @@ const RoomServicePage = () => {
     );
   }
 
-  const phoneNumber = "+998909202454";
+  const phoneNumber = "998712469536";
   const callMessage = `Iltimos, buyurtmani ${room.name}ga olib keling`;
 
   return (
-    <div className="min-h-screen bg-forest-dark">
+    <div className="min-h-screen bg-forest-dark relative overflow-hidden">
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.05]"
+        style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "360px", backgroundRepeat: "repeat" }}
+      />
       <div className="border-b border-cream/10 py-4 px-6">
-        <div className="container mx-auto max-w-4xl flex items-center justify-between">
+        <div className="container mx-auto max-w-4xl flex items-center justify-between relative z-10">
           <button
             onClick={() => navigate("/")}
             className="flex items-center gap-2 text-cream/60 hover:text-gold transition-colors font-body text-sm"
@@ -36,27 +41,32 @@ const RoomServicePage = () => {
             <ArrowLeft className="w-4 h-4" />
             Orqaga
           </button>
-          <img src={niholLogo} alt="NIHOL" className="h-8 w-auto" />
+          <img src={niholLogo} alt="NIHOL" className="h-11 md:h-12 w-auto" />
           <div className="w-16" />
         </div>
       </div>
 
-      <div className="container mx-auto max-w-4xl px-6 py-12 md:py-20">
+      <div className="container mx-auto max-w-4xl px-6 py-12 md:py-20 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <div className="overflow-hidden rounded-sm">
+            <motion.div
+              className="overflow-hidden rounded-sm border border-gold/30"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
               <img
                 src={room.image}
-                alt={room.name}
+                alt={`${room.name} rasmi`}
                 className="w-full h-64 md:h-80 object-cover"
                 width={768}
                 height={512}
               />
-            </div>
+            </motion.div>
             <div className="flex flex-col justify-center">
               <span className="text-gold text-sm tracking-[0.3em] uppercase font-body mb-2">Tanlangan xona</span>
               <h1 className="font-display text-3xl md:text-4xl text-cream mb-2">{room.name}</h1>
@@ -66,8 +76,49 @@ const RoomServicePage = () => {
               <div className="bg-gold/10 border border-gold/30 rounded-sm p-4 mb-4">
                 <p className="font-body text-cream/60 text-xs tracking-wider uppercase mb-1">Operator raqami</p>
                 <a href={`tel:${phoneNumber}`} className="font-display text-gold text-2xl hover:text-gold/80 transition-colors">
-                  +998 90 920 24 54
+                  +998 71 246 95 36
                 </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-cream/10 rounded-sm p-6 md:p-8 mb-8 bg-forest-dark/40 backdrop-blur-[1px]">
+            <h2 className="font-display text-xl text-cream mb-2">Xona haqida muhim ma'lumotlar</h2>
+            <p className="font-editorial text-cream/50 italic text-sm mb-6">
+              Mehmonlar uchun qulaylik yaratish maqsadida har bir xonada xizmat jarayoni bir xil tartibda ishlaydi.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="border border-gold/20 bg-cream/5 rounded-sm p-4">
+                <div className="flex items-center gap-2 text-gold mb-2">
+                  <Clock3 className="w-4 h-4" />
+                  <span className="font-body text-xs tracking-[0.2em] uppercase">Xizmat vaqti</span>
+                </div>
+                <p className="font-body text-sm text-cream/70">Buyurtmalar odatda 15-25 daqiqa ichida xonaga olib boriladi.</p>
+              </div>
+
+              <div className="border border-gold/20 bg-cream/5 rounded-sm p-4">
+                <div className="flex items-center gap-2 text-gold mb-2">
+                  <UtensilsCrossed className="w-4 h-4" />
+                  <span className="font-body text-xs tracking-[0.2em] uppercase">Menyu tanlovi</span>
+                </div>
+                <p className="font-body text-sm text-cream/70">Asosiy taomlar firmennit jo’ja, salat va kaboblar.</p>
+              </div>
+
+              <div className="border border-gold/20 bg-cream/5 rounded-sm p-4">
+                <div className="flex items-center gap-2 text-gold mb-2">
+                  <Users className="w-4 h-4" />
+                  <span className="font-body text-xs tracking-[0.2em] uppercase">Sig'im</span>
+                </div>
+                <p className="font-body text-sm text-cream/70">{room.capacity} uchun mos, oilaviy va do'stona uchrashuvlar uchun qulay.</p>
+              </div>
+
+              <div className="border border-gold/20 bg-cream/5 rounded-sm p-4">
+                <div className="flex items-center gap-2 text-gold mb-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span className="font-body text-xs tracking-[0.2em] uppercase">Shaxsiy muhit</span>
+                </div>
+                <p className="font-body text-sm text-cream/70">Yopiq xona formati mehmonlar uchun osoyishta va xususiy muhitni ta'minlaydi.</p>
               </div>
             </div>
           </div>
@@ -92,7 +143,7 @@ const RoomServicePage = () => {
                 Operatorga qo'ng'iroq
               </a>
               <a
-                href={`https://t.me/+998909202454?text=${encodeURIComponent(callMessage)}`}
+                href="https://t.me/niholjoja_bot"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center gap-3 px-6 py-3.5 border border-gold/50 text-gold font-body text-sm tracking-widest uppercase hover:bg-gold hover:text-forest-dark transition-all duration-300"
@@ -101,10 +152,14 @@ const RoomServicePage = () => {
                 Telegram orqali
               </a>
             </div>
+            <div className="mt-5 flex items-center gap-2 text-cream/50">
+              <CircleCheck className="w-4 h-4 text-gold" />
+              <p className="font-body text-xs">Band qilishdan oldin operator bilan xona mavjudligini aniqlashtiring.</p>
+            </div>
           </div>
 
           <p className="text-center text-cream/30 text-xs font-body tracking-wider">
-            Nihol — Kafe va Restoran · +998 90 920 24 54
+            Nihol — Kafe va Restoran · +998 71 246 95 36
           </p>
         </motion.div>
       </div>

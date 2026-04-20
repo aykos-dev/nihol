@@ -1,28 +1,24 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import patternBg from "@/assets/pattern-bg.png";
-import room1 from "@/assets/room-1.jpg";
-import room2 from "@/assets/room-2.jpg";
-import room3 from "@/assets/room-3.jpg";
-import room4 from "@/assets/room-4.jpg";
-import room5 from "@/assets/room-5.jpg";
-import room6 from "@/assets/room-6.jpg";
-import room7 from "@/assets/room-7.jpg";
+import room1 from "@/assets/1.jpg";
+import room2 from "@/assets/2.jpg";
+import room3 from "@/assets/3.jpg";
+import room4 from "@/assets/4.JPG";
+import room5 from "@/assets/5.JPG";
+import room6 from "@/assets/6.JPG";
+import room7 from "@/assets/7.JPG";
 
 export const rooms = [
-  { id: 1, name: "Xona 1", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room1, capacity: "10–14 kishi" },
-  { id: 2, name: "Xona 2", description: "Keng va zamonaviy xona", image: room2, capacity: "15–18 kishi" },
-  { id: 3, name: "Xona 3", description: "Biznes uchrashuvlar uchun ideal", image: room3, capacity: "15–18 kishi" },
-  { id: 4, name: "Xona 4", description: "Yoqimli muhitdagi xona", image: room4, capacity: "10–12 kishi" },
-  { id: 5, name: "Xona 5", description: "Do'stlar davrasiga mo'ljallangan", image: room5, capacity: "10–12 kishi" },
-  { id: 6, name: "Xona 6", description: "Shinam va xususiy xona", image: room6, capacity: "6–8 kishi" },
-  { id: 7, name: "Xona 7", description: "Bayramlar uchun hashamatli xona", image: room7, capacity: "10–12 kishi" },
+  { id: 1, name: "10-14 kishi", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room2, capacity: "10–14 kishi" },
+  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1, capacity: "15–18 kishi" },
+  { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3, capacity: "15–18 kishi" },
+  { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4, capacity: "10–12 kishi" },
+  { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5, capacity: "10–12 kishi" },
+  { id: 6, name: "6-8 kishi", description: "Shinam va xususiy xona", image: room6, capacity: "6–8 kishi" },
+  { id: 7, name: "10-12 kishi", description: "Bayramlar uchun hashamatli xona", image: room7, capacity: "10–12 kishi" },
 ];
 
 const RoomSection = () => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
   const navigate = useNavigate();
 
   return (
@@ -32,32 +28,33 @@ const RoomSection = () => {
         style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
       />
 
-      <div className="container mx-auto px-6 max-w-6xl relative z-10" ref={ref}>
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 40 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+        <div className="text-center mb-16">
           <span className="text-gold text-sm tracking-[0.3em] uppercase font-body">Xususiy xonalar</span>
           <div className="gold-separator mx-auto mt-4 mb-6" />
           <h2 className="font-display text-3xl md:text-5xl text-foreground">Xona Xizmati</h2>
           <p className="font-editorial text-lg text-muted-foreground mt-4 italic max-w-xl mx-auto">
             O'zingizga qulay xonani tanlang va maxsus xizmatdan foydalaning
           </p>
-        </motion.div>
+        </div>
 
         {/* Row 1: 4 items */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6 mb-5 md:mb-6">
-          {rooms.slice(0, 4).map((room, i) => (
-            <RoomCard key={room.id} room={room} i={i} inView={inView} onSelect={() => navigate(`/room-service/${room.id}`)} />
+          {rooms.slice(0, 4).map((room) => (
+            <RoomCard key={room.id} room={room} onSelect={() => navigate(`/room-service/${room.id}`)} />
           ))}
         </div>
-        {/* Row 2: remaining items centered */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
-          {rooms.slice(4).map((room, i) => (
-            <RoomCard key={room.id} room={room} i={i + 4} inView={inView} onSelect={() => navigate(`/room-service/${room.id}`)} />
-          ))}
+        {/* Row 2: 3 items centered */}
+        <div className="flex justify-center">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 md:gap-6 w-full md:max-w-3xl">
+            {rooms.slice(4).map((room) => (
+              <RoomCard
+                key={room.id}
+                room={room}
+                onSelect={() => navigate(`/room-service/${room.id}`)}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -66,27 +63,18 @@ const RoomSection = () => {
 
 const RoomCard = ({
   room,
-  i,
-  inView,
   onSelect,
 }: {
   room: typeof rooms[0];
-  i: number;
-  inView: boolean;
   onSelect: () => void;
 }) => (
-  <motion.div
-    className="group"
-    initial={{ opacity: 0, y: 30 }}
-    animate={inView ? { opacity: 1, y: 0 } : {}}
-    transition={{ duration: 0.6, delay: i * 0.08 }}
-  >
+  <div className="group">
     <div className="bg-forest-dark rounded-sm overflow-hidden">
       <div className="relative overflow-hidden aspect-[3/2]">
         <img
           src={room.image}
           alt={room.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           loading="lazy"
           width={768}
           height={512}
@@ -107,7 +95,7 @@ const RoomCard = ({
         </button>
       </div>
     </div>
-  </motion.div>
+  </div>
 );
 
 export default RoomSection;
