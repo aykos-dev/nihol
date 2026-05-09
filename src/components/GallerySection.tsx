@@ -1,20 +1,31 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import patternBg from "@/assets/pattern-bg.png";
+import img1835 from "@/assets/gallery/IMG_1835.jpg";
+import img1840 from "@/assets/gallery/IMG_1840.jpg";
+import img1849 from "@/assets/gallery/IMG_1849.jpg";
+import img1852 from "@/assets/gallery/IMG_1852.jpg";
+import img1855 from "@/assets/gallery/IMG_1855.jpg";
+import img1870 from "@/assets/gallery/IMG_1870.jpg";
+import buildingImg from "@/assets/gallery/nihol-building.jpg";
+import coasterImg from "@/assets/gallery/nihol-coaster.png";
+import interiorImg from "@/assets/gallery/nihol-interior.png";
 
 type GalleryImage = { src: string; alt: string };
 
-const galleryModules = import.meta.glob<string>("../assets/gallery/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp,WEBP}", {
-  eager: true,
-  import: "default",
-});
-
-const galleryImages: GalleryImage[] = Object.entries(galleryModules)
-  .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: "base" }))
-  .map(([path, src], index) => {
-    const stem = path.split("/").pop()?.replace(/\.[^.]+$/, "") ?? `gallery-${index + 1}`;
-    return { src, alt: `Galereya ${stem}` };
-  });
+const galleryImages: GalleryImage[] = [
+  { src: buildingImg.src, alt: "Galereya nihol-building" },
+  { src: coasterImg.src, alt: "Galereya nihol-coaster" },
+  { src: img1835.src, alt: "Galereya IMG_1835" },
+  { src: img1840.src, alt: "Galereya IMG_1840" },
+  { src: img1849.src, alt: "Galereya IMG_1849" },
+  { src: img1852.src, alt: "Galereya IMG_1852" },
+  { src: img1855.src, alt: "Galereya IMG_1855" },
+  { src: img1870.src, alt: "Galereya IMG_1870" },
+  { src: interiorImg.src, alt: "Galereya nihol-interior" },
+];
 
 function rotateImages(offset: number): GalleryImage[] {
   if (galleryImages.length === 0) return [];
@@ -84,7 +95,7 @@ const GallerySection = () => {
     <section id="gallery" className="py-24 md:py-32 bg-cream-dark relative overflow-hidden">
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
       />
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10" ref={ref as React.RefObject<HTMLDivElement>}>

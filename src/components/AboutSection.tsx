@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import buildingImg from "@/assets/gallery/nihol-building.jpg";
@@ -24,7 +26,7 @@ const AboutSection = () => {
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
             <img
-              src={buildingImg}
+              src={buildingImg.src}
               alt="Nihol restoran ichki ko'rinishi"
               className="w-full h-[460px] md:h-[620px] object-cover"
               loading="lazy"

@@ -1,0 +1,51 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-3134317e017aa746.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-483932fd5153cebd.js",
+      "static/chunks/main-app-7116b400d06c2beb.js",
+      "static/chunks/app/_not-found/page-60ea9e16cf6f773d.js"
+    ],
+    "/not-found": [
+      "static/chunks/webpack-3134317e017aa746.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-483932fd5153cebd.js",
+      "static/chunks/main-app-7116b400d06c2beb.js",
+      "static/chunks/app/not-found-7a82829520461244.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-3134317e017aa746.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-483932fd5153cebd.js",
+      "static/chunks/main-app-7116b400d06c2beb.js",
+      "static/css/f99a5af116f35c9e.css",
+      "static/chunks/329-9038a98d721c3cc4.js",
+      "static/chunks/app/layout-0d9db6a14aa8350a.js"
+    ],
+    "/api/menu-image/[...slug]/route": [
+      "static/chunks/webpack-3134317e017aa746.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-483932fd5153cebd.js",
+      "static/chunks/main-app-7116b400d06c2beb.js",
+      "static/chunks/app/api/menu-image/[...slug]/route-60ea9e16cf6f773d.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-3134317e017aa746.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-483932fd5153cebd.js",
+      "static/chunks/main-app-7116b400d06c2beb.js",
+      "static/chunks/648-ac45e387b58203eb.js",
+      "static/chunks/442-658a23e49a851fb4.js",
+      "static/chunks/app/page-12bbb96f2224cfd0.js"
+    ],
+    "/room-service/[roomId]/page": [
+      "static/chunks/webpack-3134317e017aa746.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-483932fd5153cebd.js",
+      "static/chunks/main-app-7116b400d06c2beb.js",
+      "static/chunks/648-ac45e387b58203eb.js",
+      "static/chunks/app/room-service/[roomId]/page-e501972dea1191ae.js"
+    ]
+  }
+}

@@ -14,7 +14,7 @@ const FooterSection = () => {
     <footer className="bg-forest-dark border-t border-accent/10 py-12">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="flex flex-col items-center text-center">
-          <img src={niholLogo} alt="NIHOL" className="h-14 md:h-16 w-auto mb-3" loading="lazy" />
+          <img src={niholLogo.src} alt="NIHOL" className="h-14 md:h-16 w-auto mb-3" loading="lazy" />
           <p className="font-editorial text-cream/40 italic text-sm mb-6">
             Restourant
           </p>

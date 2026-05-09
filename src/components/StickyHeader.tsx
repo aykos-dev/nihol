@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import niholLogo from "@/assets/nihol-logo.png";
@@ -34,7 +36,7 @@ const StickyHeader = () => {
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
         <a href="#home" className="flex items-center gap-3">
-          <img src={niholLogo} alt="NIHOL" className="h-8 md:h5 w-auto rounded-sm" />
+          <img src={niholLogo.src} alt="NIHOL" className="h-8 md:h5 w-auto rounded-sm" />
           <span className="font-display text-cream text-lg tracking-wider hidden sm:inline"></span>
         </a>
 

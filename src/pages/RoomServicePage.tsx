@@ -1,4 +1,7 @@
-import { useParams, useNavigate } from "react-router-dom";
+"use client";
+
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Phone, ArrowLeft, MessageCircle, Clock3, CircleCheck, ShieldCheck, UtensilsCrossed, Users } from "lucide-react";
 import { rooms } from "@/components/RoomSection";
@@ -6,16 +9,17 @@ import niholLogo from "@/assets/nihol-logo.png";
 import patternBg from "@/assets/pattern-bg.png";
 
 const RoomServicePage = () => {
-  const { roomId } = useParams();
-  const navigate = useNavigate();
-  const room = rooms.find((r) => r.id === Number(roomId));
+  const router = useRouter();
+  const params = useParams<{ roomId: string }>();
+  const roomIdNumber = Number(params?.roomId);
+  const room = rooms.find((r) => r.id === roomIdNumber);
 
   if (!room) {
     return (
       <div className="min-h-screen bg-forest-dark flex items-center justify-center">
         <div className="text-center">
           <p className="text-cream/50 font-editorial text-lg italic">Xona topilmadi</p>
-          <button onClick={() => navigate("/")} className="text-gold mt-4 underline font-body text-sm">
+          <button onClick={() => router.push("/")} className="text-gold mt-4 underline font-body text-sm">
             Bosh sahifaga qaytish
           </button>
         </div>
@@ -30,18 +34,18 @@ const RoomServicePage = () => {
     <div className="min-h-screen bg-forest-dark relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.05]"
-        style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "360px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "360px", backgroundRepeat: "repeat" }}
       />
       <div className="border-b border-cream/10 py-4 px-6">
         <div className="container mx-auto max-w-4xl flex items-center justify-between relative z-10">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => router.push("/")}
             className="flex items-center gap-2 text-cream/60 hover:text-gold transition-colors font-body text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             Orqaga
           </button>
-          <img src={niholLogo} alt="NIHOL" className="h-11 md:h-12 w-auto" />
+          <Image src={niholLogo} alt="NIHOL" className="h-11 md:h-12 w-auto" priority />
           <div className="w-16" />
         </div>
       </div>
@@ -59,13 +63,7 @@ const RoomServicePage = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <img
-                src={room.image}
-                alt={`${room.name} rasmi`}
-                className="w-full h-64 md:h-80 object-cover"
-                width={768}
-                height={512}
-              />
+              <Image src={room.image} alt={`${room.name} rasmi`} className="w-full h-64 md:h-80 object-cover" width={768} height={512} />
             </motion.div>
             <div className="flex flex-col justify-center">
               <span className="text-gold text-sm tracking-[0.3em] uppercase font-body mb-2">Tanlangan xona</span>

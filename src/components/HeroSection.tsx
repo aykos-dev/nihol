@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import niholLogo from "@/assets/nihol-logo.png";
@@ -31,7 +33,7 @@ const HeroSection = () => {
     <section id="home" className="relative h-screen w-full overflow-hidden">
       {/* Preload fallback shown instantly */}
       {/* <img
-        src={heroFallback}
+        src={heroFallback.src}
         alt="NIHOL Restaurant"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
           videoLoaded && !videoError ? "opacity-0" : "opacity-100"
@@ -62,7 +64,7 @@ const HeroSection = () => {
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
         <motion.img
-          src={niholLogo}
+          src={niholLogo.src}
           alt="NIHOL"
           className="w-48 md:w-64 mb-8"
           initial={{ opacity: 0, scale: 0.8 }}

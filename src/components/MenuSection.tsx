@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+"use client";
+
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
@@ -18,58 +20,10 @@ import dessertTiramisu from "@/assets/dessert-tiramisu.jpg";
 import dessertBaklava from "@/assets/dessert-baklava.jpg";
 import dessertFondant from "@/assets/dessert-fondant.jpg";
 import patternBg from "@/assets/pattern-bg.png";
-import { MENU_DISH_ROWS, resolveMenuDishLabel } from "@/data/menuDishMeta";
+import { MENU_DISH_ROWS, type MenuDishRow } from "@/data/menuDishMeta";
 
 type SubDish = { id: string; name: string; image: string; price: string };
-
-/** All images in `src/assets/menu/salads` */
-const saladImageModules = import.meta.glob<string>("../assets/menu/salads/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-
-/** All images under `src/assets/menu/bar` — papka bo‘yicha guruhlangan */
-const barImageModules = import.meta.glob<string>("../assets/menu/bar/**/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-
-const assortiMenuModules = import.meta.glob<string>("../assets/menu/assorti/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const bulonMenuModules = import.meta.glob<string>("../assets/menu/bulon/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const somsaMenuModules = import.meta.glob<string>("../assets/menu/somsa/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const chickenMenuModules = import.meta.glob<string>("../assets/menu/chicken/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const fishMenuModules = import.meta.glob<string>("../assets/menu/fish/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const mangalMenuModules = import.meta.glob<string>("../assets/menu/mangal/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const setMenuModules = import.meta.glob<string>("../assets/menu/set/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const dessertsMenuModules = import.meta.glob<string>("../assets/menu/desserts/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
-const shirinlikMenuModules = import.meta.glob<string>("../assets/menu/shirinlik/*.{jpg,jpeg,JPG}", {
-  eager: true,
-  import: "default",
-});
+type PreviewImage = { src: string; alt: string };
 
 function toTitleCaseWords(value: string): string {
   return value
@@ -119,14 +73,22 @@ function applySaladPriority(dishes: SubDish[]): SubDish[] {
   return [first, ...middle, ...tail].filter((dish): dish is SubDish => Boolean(dish));
 }
 
-function mapDishFromPath(path: string, url: string): SubDish {
-  const r = resolveMenuDishLabel(path, url);
-  return { id: r.id, name: normalizeDishName(r.name), image: r.image, price: r.price };
+function menuImageUrlFromRel(rel: string): string {
+  const encodedRel = rel
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+  return `/api/menu-image/${encodedRel}`;
 }
 
-function dishesFromModules(modules: Record<string, string>, opts?: { saladMode?: boolean }): SubDish[] {
-  const mapped = Object.entries(modules)
-    .map(([path, url]) => mapDishFromPath(path, url))
+function dishesFromRows(rows: readonly MenuDishRow[], opts?: { saladMode?: boolean }): SubDish[] {
+  const mapped = rows
+    .map((row) => ({
+      id: row.rel.toLowerCase(),
+      name: normalizeDishName(row.name),
+      image: menuImageUrlFromRel(row.rel),
+      price: row.price,
+    }))
     .sort(compareDishOrder);
 
   return opts?.saladMode ? applySaladPriority(mapped) : mapped;
@@ -134,26 +96,6 @@ function dishesFromModules(modules: Record<string, string>, opts?: { saladMode?:
 
 type BarSubSection = { title: string; items: SubDish[] };
 type SetSpec = { people: number; name: string; price: string };
-
-const saladDishes = dishesFromModules(saladImageModules, { saladMode: true });
-
-const dessertMenuModulesAll: Record<string, string> = {
-  ...dessertsMenuModules,
-  ...shirinlikMenuModules,
-};
-const dessertDishesFromMenu = dishesFromModules(dessertMenuModulesAll);
-const dessertDishes: SubDish[] =
-  dessertDishesFromMenu.length > 0
-    ? dessertDishesFromMenu
-    : [
-        { id: "dessert-fallback-tiramisu", name: "Tiramisu", image: dessertTiramisu, price: "35,000" },
-        { id: "dessert-fallback-baklava", name: "Baklava", image: dessertBaklava, price: "28,000" },
-        { id: "dessert-fallback-fondant", name: "Shokoladli fondant", image: dessertFondant, price: "40,000" },
-        { id: "dessert-fallback-cheesecake", name: "Chiz keyk", image: dessertTiramisu, price: "38,000" },
-        { id: "dessert-fallback-panna", name: "Panna kotta", image: dessertBaklava, price: "30,000" },
-        { id: "dessert-fallback-medovik", name: "Medovik", image: dessertFondant, price: "25,000" },
-        { id: "dessert-fallback-napoleon", name: "Napoleon", image: dessertTiramisu, price: "28,000" },
-      ];
 
 const BAR_FOLDER_ORDER = ["coffee", "lemonades", "mojito", "milkshake", "tea"] as const;
 const BAR_FOLDER_TITLES: Record<(typeof BAR_FOLDER_ORDER)[number], string> = {
@@ -164,48 +106,9 @@ const BAR_FOLDER_TITLES: Record<(typeof BAR_FOLDER_ORDER)[number], string> = {
   tea: "Choy",
 };
 
-const BAR_META_BY_FOLDER: Record<(typeof BAR_FOLDER_ORDER)[number], { rel: string; name: string; price: string }[]> = {
-  coffee: [],
-  lemonades: [],
-  mojito: [],
-  milkshake: [],
-  tea: [],
-};
-
-for (const row of MENU_DISH_ROWS) {
-  if (!row.rel.startsWith("bar/")) continue;
-  const folder = row.rel.split("/")[1] as (typeof BAR_FOLDER_ORDER)[number];
-  if (BAR_FOLDER_ORDER.includes(folder)) {
-    BAR_META_BY_FOLDER[folder].push({ rel: row.rel, name: row.name, price: row.price });
-  }
+function rowsByPrefix(prefix: string): MenuDishRow[] {
+  return MENU_DISH_ROWS.filter((row) => row.rel.startsWith(prefix));
 }
-
-function barFolderFromPath(modulePath: string): string | null {
-  const normalized = modulePath.replace(/\\/g, "/");
-  const m = normalized.match(/\/bar\/([^/]+)\//);
-  return m?.[1] ?? null;
-}
-
-const barSections: BarSubSection[] = BAR_FOLDER_ORDER.flatMap((folder) => {
-  const sortedFolderEntries = Object.entries(barImageModules)
-    .filter(([path]) => barFolderFromPath(path) === folder)
-    .sort(([a], [b]) => a.localeCompare(b, undefined, { sensitivity: "base" }));
-
-  const items = sortedFolderEntries
-    .map(([path, url], index) => {
-      const metaRow = BAR_META_BY_FOLDER[folder][index];
-      if (!metaRow) return mapDishFromPath(path, url);
-      return {
-        id: metaRow.rel.toLowerCase(),
-        name: normalizeDishName(metaRow.name),
-        image: url,
-        price: metaRow.price,
-      };
-    })
-    .sort(compareDishOrder);
-  if (items.length === 0) return [];
-  return [{ title: BAR_FOLDER_TITLES[folder], items }];
-});
 
 type Category = {
   name: string;
@@ -215,13 +118,6 @@ type Category = {
   barSections?: BarSubSection[];
 };
 
-const assortiDishes = dishesFromModules(assortiMenuModules);
-const bulonDishes = dishesFromModules(bulonMenuModules);
-const somsaDishes = dishesFromModules(somsaMenuModules);
-const chickenDishes = dishesFromModules(chickenMenuModules);
-const fishDishes = dishesFromModules(fishMenuModules);
-const mangalDishes = dishesFromModules(mangalMenuModules);
-const setDishes = dishesFromModules(setMenuModules);
 const SET_MENU_SPECS: SetSpec[] = [
   { people: 1, name: "Nihol Assorti (1 kishi )", price: "97.900" },
   { people: 4, name: "Nihol Assorti (4 kishi)", price: "685.000" },
@@ -258,68 +154,49 @@ function normalizeSetDishes(dishes: SubDish[]): SubDish[] {
   }).filter((dish) => Boolean(dish.image));
 }
 
-const categories: Category[] = [
-  {
-    name: "Salatlar",
-    image: catSalads,
-    type: "normal",
-    dishes: saladDishes,
-  },
-  {
-    name: "Assorti",
-    image: catAssorti,
-    type: "normal",
-    dishes: assortiDishes,
-  },
-  {
-    name: "Bulon",
-    image: catShorva,
-    type: "normal",
-    dishes: bulonDishes,
-  },
-  {
-    name: "Somsa",
-    image: catSomsa,
-    type: "normal",
-    dishes: somsaDishes,
-  },
-  {
-    name: "Tovuq taomlari",
-    image: catChicken,
-    type: "normal",
-    dishes: chickenDishes,
-  },
-  {
-    name: "Baliq taomlari",
-    image: catFish,
-    type: "normal",
-    dishes: fishDishes,
-  },
-  {
-    name: "Mangal taomlari",
-    image: catMangal,
-    type: "normal",
-    dishes: mangalDishes,
-  },
-  {
-    name: "Setlar",
-    image: catSetlar,
-    type: "normal",
-    dishes: normalizeSetDishes(setDishes),
-  },
-  {
-    name: "Bar",
-    image: catBar,
-    type: "bar",
-    barSections,
-  },
-  {
-    name: "Shirinliklar",
-    image: catShirinlik,
-    type: "dessert",
-    dishes: dessertDishes,
-  },
-];
+function buildCategories(): Category[] {
+  const saladDishes = dishesFromRows(rowsByPrefix("salads/"), { saladMode: true });
+  const dessertDishesFromMenu = dishesFromRows(rowsByPrefix("desserts/"));
+  const dessertDishes: SubDish[] =
+    dessertDishesFromMenu.length > 0
+      ? dessertDishesFromMenu
+      : [
+          { id: "dessert-fallback-tiramisu", name: "Tiramisu", image: dessertTiramisu.src, price: "35,000" },
+          { id: "dessert-fallback-baklava", name: "Baklava", image: dessertBaklava.src, price: "28,000" },
+          { id: "dessert-fallback-fondant", name: "Shokoladli fondant", image: dessertFondant.src, price: "40,000" },
+          { id: "dessert-fallback-cheesecake", name: "Chiz keyk", image: dessertTiramisu.src, price: "38,000" },
+          { id: "dessert-fallback-panna", name: "Panna kotta", image: dessertBaklava.src, price: "30,000" },
+          { id: "dessert-fallback-medovik", name: "Medovik", image: dessertFondant.src, price: "25,000" },
+          { id: "dessert-fallback-napoleon", name: "Napoleon", image: dessertTiramisu.src, price: "28,000" },
+        ];
+
+  const barSections: BarSubSection[] = BAR_FOLDER_ORDER.flatMap((folder) => {
+    const items = dishesFromRows(rowsByPrefix(`bar/${folder}/`));
+    if (items.length === 0) return [];
+    return [{ title: BAR_FOLDER_TITLES[folder], items }];
+  });
+
+  const assortiDishes = dishesFromRows(rowsByPrefix("assorti/"));
+  const bulonDishes = dishesFromRows(rowsByPrefix("bulon/"));
+  const somsaDishes = dishesFromRows(rowsByPrefix("somsa/"));
+  const chickenDishes = dishesFromRows(rowsByPrefix("chicken/"));
+  const fishDishes = dishesFromRows(rowsByPrefix("fish/"));
+  const mangalDishes = dishesFromRows(rowsByPrefix("mangal/"));
+  const setDishes = dishesFromRows(rowsByPrefix("set/"));
+
+  return [
+    { name: "Salatlar", image: catSalads.src, type: "normal", dishes: saladDishes },
+    { name: "Assorti", image: catAssorti.src, type: "normal", dishes: assortiDishes },
+    { name: "Bulon", image: catShorva.src, type: "normal", dishes: bulonDishes },
+    { name: "Somsa", image: catSomsa.src, type: "normal", dishes: somsaDishes },
+    { name: "Tovuq taomlari", image: catChicken.src, type: "normal", dishes: chickenDishes },
+    { name: "Baliq taomlari", image: catFish.src, type: "normal", dishes: fishDishes },
+    { name: "Mangal taomlari", image: catMangal.src, type: "normal", dishes: mangalDishes },
+    { name: "Setlar", image: catSetlar.src, type: "normal", dishes: normalizeSetDishes(setDishes) },
+    { name: "Bar", image: catBar.src, type: "bar", barSections },
+    { name: "Shirinliklar", image: catShirinlik.src, type: "dessert", dishes: dessertDishes },
+  ];
+}
 
 type ScrollRootRef = RefObject<HTMLElement | null>;
 
@@ -327,48 +204,24 @@ type ScrollRootRef = RefObject<HTMLElement | null>;
 function LazyMenuImage({
   src,
   alt,
-  scrollRootRef,
   className,
 }: {
   src: string;
   alt: string;
-  scrollRootRef?: ScrollRootRef;
   className?: string;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(false);
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el || active) return;
-
-    const root = scrollRootRef?.current ?? null;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) setActive(true);
-      },
-      { root, rootMargin: "180px 0px 80px 0px", threshold: 0.01 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [active, scrollRootRef, src]);
-
   return (
-    <div ref={wrapRef} className="relative w-full h-full min-h-0 bg-forest-dark/30">
-      {active ? (
-        <img
-          src={src}
-          alt={alt}
-          className={className}
-          decoding="async"
-          loading="lazy"
-          fetchPriority="low"
-          width={480}
-          height={480}
-        />
-      ) : (
-        <div className="absolute inset-0 animate-pulse bg-forest-dark/40" aria-hidden />
-      )}
+    <div className="relative w-full h-full min-h-0 bg-forest-dark/30">
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        decoding="async"
+        loading="lazy"
+        fetchPriority="low"
+        width={480}
+        height={480}
+      />
     </div>
   );
 }
@@ -377,10 +230,12 @@ function LazyMenuImage({
 const SubDishGrid = ({
   dishes,
   scrollRootRef,
+  onImageClick,
 }: {
   dishes: SubDish[];
   /** Modal body (overflow-y-auto) so images load as you scroll, not all at once */
   scrollRootRef?: ScrollRootRef;
+  onImageClick: (image: PreviewImage) => void;
 }) => {
   const rows: SubDish[][] = [];
   for (let i = 0; i < dishes.length; i += 3) {
@@ -395,14 +250,18 @@ const SubDishGrid = ({
         >
           {row.map((dish, ci) => (
             <div key={`${ri}-${ci}-${dish.id}`} className="group/dish">
-              <div className="relative overflow-hidden rounded-sm aspect-square mb-2">
+              <button
+                type="button"
+                onClick={() => onImageClick({ src: dish.image, alt: dish.name })}
+                className="relative overflow-hidden rounded-sm aspect-square mb-2 w-full cursor-pointer hover:cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70"
+                aria-label={`${dish.name} rasmini kattalashtirish`}
+              >
                 <LazyMenuImage
                   src={dish.image}
                   alt={dish.name}
-                  scrollRootRef={scrollRootRef}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/dish:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover/dish:scale-125"
                 />
-              </div>
+              </button>
               <p className="font-display text-sm text-cream text-center">{dish.name}</p>
               <p className="text-gold text-xs text-center font-body mt-1">{dish.price} so'm</p>
             </div>
@@ -417,7 +276,18 @@ const MenuSection = () => {
   const ref = useRef(null);
   const modalBodyRef = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [selected, setSelected] = useState<Category | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<PreviewImage | null>(null);
+  const isImagePreviewOpen = Boolean(selectedImage);
+  const selected = useMemo(
+    () => categories.find((category) => category.name === selectedName) ?? null,
+    [categories, selectedName],
+  );
+
+  useEffect(() => {
+    setCategories(buildCategories());
+  }, []);
 
   useEffect(() => {
     if (!selected) return;
@@ -437,13 +307,31 @@ const MenuSection = () => {
     };
   }, [selected]);
 
+  useEffect(() => {
+    if (!isImagePreviewOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isImagePreviewOpen]);
+
+  useEffect(() => {
+    if (selected) return;
+    setSelectedImage(null);
+  }, [selected]);
+
   return (
     <>
       <section id="menu" className="py-24 md:py-32 bg-forest-dark relative overflow-hidden">
         {/* Pattern decoration */}
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+          style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
         />
 
         <div className="container mx-auto px-6 max-w-6xl relative z-10" ref={ref}>
@@ -461,23 +349,22 @@ const MenuSection = () => {
           {/* Row 1: 4 items */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6 mb-5 md:mb-6">
             {categories.slice(0, 4).map((cat, i) => (
-              <CategoryCard key={cat.name} cat={cat} i={i} inView={inView} onClick={() => setSelected(cat)} />
+              <CategoryCard key={cat.name} cat={cat} i={i} inView={inView} onClick={() => setSelectedName(cat.name)} />
             ))}
           </div>
           {/* Row 2: 4 items */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6 mb-5 md:mb-6">
             {categories.slice(4, 8).map((cat, i) => (
-              <CategoryCard key={cat.name} cat={cat} i={i + 4} inView={inView} onClick={() => setSelected(cat)} />
+              <CategoryCard key={cat.name} cat={cat} i={i + 4} inView={inView} onClick={() => setSelectedName(cat.name)} />
             ))}
           </div>
           {/* Row 3: 2 items centered */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
-            <div className="md:col-start-2 md:col-span-1">
-              <CategoryCard cat={categories[8]} i={8} inView={inView} onClick={() => setSelected(categories[8])} />
-            </div>
-            <div className="md:col-span-1">
-              <CategoryCard cat={categories[9]} i={9} inView={inView} onClick={() => setSelected(categories[9])} />
-            </div>
+            {categories.slice(8, 10).map((cat, index) => (
+              <div key={cat.name} className={index === 0 ? "md:col-start-2 md:col-span-1" : "md:col-span-1"}>
+                <CategoryCard cat={cat} i={index + 8} inView={inView} onClick={() => setSelectedName(cat.name)} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -491,7 +378,7 @@ const MenuSection = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="absolute inset-0 bg-forest-dark/93" onClick={() => setSelected(null)} />
+            <div className="absolute inset-0 bg-forest-dark/93" onClick={() => setSelectedName(null)} />
             <motion.div
               ref={modalBodyRef}
               className="menu-modal-scroll relative bg-forest-dark border border-accent/20 rounded-sm w-[min(100%,96vw)] max-w-7xl max-h-[94vh] overflow-y-auto overflow-x-hidden overscroll-contain p-5 sm:p-6 md:p-10"
@@ -501,7 +388,7 @@ const MenuSection = () => {
               transition={{ duration: 0.3 }}
             >
               <button
-                onClick={() => setSelected(null)}
+                onClick={() => setSelectedName(null)}
                 className="absolute top-4 right-4 text-cream/50 hover:text-gold transition-colors z-10"
               >
                 <X className="w-5 h-5" />
@@ -516,7 +403,11 @@ const MenuSection = () => {
                   {selected.barSections.map((section) => (
                     <div key={section.title}>
                       <h3 className="font-display text-lg text-cream mb-4">{section.title}</h3>
-                      <SubDishGrid dishes={section.items} scrollRootRef={modalBodyRef} />
+                      <SubDishGrid
+                        dishes={section.items}
+                        scrollRootRef={modalBodyRef}
+                        onImageClick={setSelectedImage}
+                      />
                     </div>
                   ))}
                 </div>
@@ -524,8 +415,58 @@ const MenuSection = () => {
 
               {/* Normal & Dessert: 3-3-1 grid */}
               {(selected.type === "normal" || selected.type === "dessert") && selected.dishes && (
-                <SubDishGrid dishes={selected.dishes} scrollRootRef={modalBodyRef} />
+                <SubDishGrid
+                  dishes={selected.dishes}
+                  scrollRootRef={modalBodyRef}
+                  onImageClick={setSelectedImage}
+                />
               )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Submenu image preview (over category modal) */}
+      <AnimatePresence>
+        {isImagePreviewOpen && selectedImage && (
+          <motion.div
+            className="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6 md:p-8 cursor-zoom-out"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="absolute inset-0 bg-forest-dark/95" onClick={() => setSelectedImage(null)} />
+            <motion.div
+              className="relative z-10 w-full max-w-6xl border border-gold/30 bg-forest-dark rounded-sm p-3 sm:p-4 md:p-5 shadow-[0_10px_80px_rgba(0,0,0,0.55)]"
+              initial={{ scale: 0.9, y: 12, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 12, opacity: 0 }}
+              transition={{ duration: 0.24, ease: "easeOut" }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setSelectedImage(null)}
+                className="absolute right-3 top-3 z-20 text-cream/60 hover:text-gold transition-colors"
+                aria-label="Rasm preview oynasini yopish"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="mb-3 pr-8">
+                <p className="font-display text-gold text-base md:text-lg">{selectedImage.alt}</p>
+              </div>
+              <div className="relative w-full max-h-[86vh] overflow-hidden rounded-sm">
+                <motion.img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full h-full max-h-[84vh] object-contain"
+                  decoding="async"
+                  loading="eager"
+                  initial={{ scale: 0.94, opacity: 0.7 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.28, ease: "easeOut" }}
+                />
+              </div>
             </motion.div>
           </motion.div>
         )}

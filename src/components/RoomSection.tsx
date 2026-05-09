@@ -1,4 +1,7 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import patternBg from "@/assets/pattern-bg.png";
 import room1 from "@/assets/1.jpg";
 import room2 from "@/assets/2.jpg";
@@ -9,23 +12,23 @@ import room6 from "@/assets/6.JPG";
 import room7 from "@/assets/7.JPG";
 
 export const rooms = [
-  { id: 1, name: "10-14 kishi", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room2, capacity: "10–14 kishi" },
-  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1, capacity: "15–18 kishi" },
-  { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3, capacity: "15–18 kishi" },
-  { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4, capacity: "10–12 kishi" },
-  { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5, capacity: "10–12 kishi" },
-  { id: 6, name: "6-8 kishi", description: "Shinam va xususiy xona", image: room6, capacity: "6–8 kishi" },
-  { id: 7, name: "10-12 kishi", description: "Bayramlar uchun hashamatli xona", image: room7, capacity: "10–12 kishi" },
+  { id: 1, name: "10-14 kishi", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room2.src, capacity: "10–14 kishi" },
+  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1.src, capacity: "15–18 kishi" },
+  { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3.src, capacity: "15–18 kishi" },
+  { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4.src, capacity: "10–12 kishi" },
+  { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5.src, capacity: "10–12 kishi" },
+  { id: 6, name: "6-8 kishi", description: "Shinam va xususiy xona", image: room6.src, capacity: "6–8 kishi" },
+  { id: 7, name: "10-12 kishi", description: "Bayramlar uchun hashamatli xona", image: room7.src, capacity: "10–12 kishi" },
 ];
 
 const RoomSection = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <section id="rooms" className="py-24 md:py-32 bg-cream relative overflow-hidden">
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url(${patternBg})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
       />
 
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
@@ -41,7 +44,7 @@ const RoomSection = () => {
         {/* Row 1: 4 items */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6 mb-5 md:mb-6">
           {rooms.slice(0, 4).map((room) => (
-            <RoomCard key={room.id} room={room} onSelect={() => navigate(`/room-service/${room.id}`)} />
+            <RoomCard key={room.id} room={room} onSelect={() => router.push(`/room-service/${room.id}`)} />
           ))}
         </div>
         {/* Row 2: 3 items centered */}
@@ -51,7 +54,7 @@ const RoomSection = () => {
               <RoomCard
                 key={room.id}
                 room={room}
-                onSelect={() => navigate(`/room-service/${room.id}`)}
+                onSelect={() => router.push(`/room-service/${room.id}`)}
               />
             ))}
           </div>
@@ -71,13 +74,13 @@ const RoomCard = ({
   <div className="group">
     <div className="bg-forest-dark rounded-sm overflow-hidden">
       <div className="relative overflow-hidden aspect-[3/2]">
-        <img
+        <Image
           src={room.image}
           alt={room.name}
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-          loading="lazy"
           width={768}
           height={512}
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/60 to-transparent" />
         <div className="absolute top-3 right-3 bg-gold/90 text-forest-dark px-2.5 py-0.5 text-xs font-body tracking-wider uppercase">
