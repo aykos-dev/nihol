@@ -56,7 +56,7 @@ const HeroSection = () => {
             videoLoaded ? "opacity-100" : "opacity-0"
           }`}
         >
-          <source src="/nihol-hero.mp4" type="video/mp4" />
+          <source src="/IMG_2104.mp4" type="video/mp4" />
         </video>
       )}
 

@@ -119,13 +119,13 @@ type Category = {
 };
 
 const SET_MENU_SPECS: SetSpec[] = [
-  { people: 1, name: "Nihol Assorti (1 kishi )", price: "97.900" },
-  { people: 4, name: "Nihol Assorti (4 kishi)", price: "685.000" },
-  { people: 6, name: "Nihol Assorti (6 kishi)", price: "777.000" },
-  { people: 10, name: "Nihol Assorti (10 kishi)", price: "1.236.000" },
-  { people: 15, name: "Nihol Assorti (15 kishi)", price: "1.854.000" },
-  { people: 20, name: "Nihol Assorti (20 kishi)", price: "2.018.000" },
-  { people: 25, name: "Nihol Assorti  (25 kishi)", price: "2.322.000" },
+  { people: 1, name: "Nihol Assorti (1 kishi )", price: "103.200" },
+  { people: 4, name: "Nihol Assorti (4 kishi)", price: "718.000" },
+  { people: 6, name: "Nihol Assorti (6 kishi)", price: "834.000" },
+  { people: 10, name: "Nihol Assorti (10 kishi)", price: "1.215.600" },
+  { people: 15, name: "Nihol Assorti (15 kishi)", price: "1.678.000" },
+  { people: 20, name: "Nihol Assorti (20 kishi)", price: "2.124.800" },
+  { people: 25, name: "Nihol Assorti  (25 kishi)", price: "2.438.600" },
 ];
 
 function getSetPeopleValue(value: string): number | null {

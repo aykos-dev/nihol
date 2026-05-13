@@ -17,7 +17,7 @@ export const rooms = [
   { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3.src, capacity: "15–18 kishi" },
   { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4.src, capacity: "10–12 kishi" },
   { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5.src, capacity: "10–12 kishi" },
-  { id: 6, name: "6-8 kishi", description: "Shinam va xususiy xona", image: room6.src, capacity: "6–8 kishi" },
+  { id: 6, name: "8-10 kishi", description: "Shinam va xususiy xona", image: room6.src, capacity: "8–10 kishi" },
   { id: 7, name: "10-12 kishi", description: "Bayramlar uchun hashamatli xona", image: room7.src, capacity: "10–12 kishi" },
 ];
 
