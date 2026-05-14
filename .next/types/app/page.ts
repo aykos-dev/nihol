@@ -1,4 +1,4 @@
-// File: D:\react\Nihol\nihol-elegance-project\app\page.tsx
+// File: /Users/sardor/work/nihol/app/page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

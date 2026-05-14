@@ -1,4 +1,4 @@
-// File: D:\react\Nihol\nihol-elegance-project\app\room-service\[roomId]\page.tsx
+// File: /Users/sardor/work/nihol/app/room-service/[roomId]/page.tsx
 import * as entry from '../../../../../app/room-service/[roomId]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

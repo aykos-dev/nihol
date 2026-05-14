@@ -1,4 +1,4 @@
-// File: D:\react\Nihol\nihol-elegance-project\app\layout.tsx
+// File: /Users/sardor/work/nihol/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
