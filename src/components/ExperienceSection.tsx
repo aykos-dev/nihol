@@ -1,27 +1,44 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
-import { Gem, Flame, UtensilsCrossed, Heart } from "lucide-react";
+import { Gem, Flame, UtensilsCrossed } from "lucide-react";
+import niholLogoN from "@/assets/nihol-logo-N.png";
+import OptimizedImage from "@/components/media/OptimizedImage";
 
-const features = [
+type Feature = {
+  icon: ReactNode;
+  title: string;
+  description: string;
+};
+
+const features: Feature[] = [
   {
-    icon: Gem,
+    icon: <Gem className="w-7 h-7 text-gold" strokeWidth={1.5} />,
     title: "Sifatli Mahsulotlar",
     description: "Eng toza va sifatli mahsulotlar — mahalliy fermerlardan va ishonchli yetkazib beruvchilardan.",
   },
   {
-    icon: Flame,
+    icon: <Flame className="w-7 h-7 text-gold" strokeWidth={1.5} />,
     title: "Nafis Muhit",
     description: "Issiq, qulay va zamonaviy dizayn — har bir tashrif maxsus his etiladi.",
   },
   {
-    icon: UtensilsCrossed,
+    icon: <UtensilsCrossed className="w-7 h-7 text-gold" strokeWidth={1.5} />,
     title: "Maxsus Taomlar",
     description: "An'anaviy o'zbek retseptlari zamonaviy talqinda — har bir taom san'at asari.",
   },
   {
-    icon: Heart,
+    icon: (
+      <OptimizedImage
+        src={niholLogoN}
+        alt="Nihol N logo"
+        width={28}
+        height={28}
+        className="w-7 h-7 object-contain"
+        sizes="28px"
+      />
+    ),
     title: "Unutilmas Xizmat",
     description: "Diqqatli va samimiy xizmat — sizni qayta-qayta tashrif buyurishga undaydi.",
   },
@@ -57,7 +74,7 @@ const ExperienceSection = () => {
               className="text-center group"
             >
               <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-gold/30 flex items-center justify-center group-hover:bg-gold/10 group-hover:scale-110 transition-all duration-300">
-                <f.icon className="w-7 h-7 text-gold" strokeWidth={1.5} />
+                {f.icon}
               </div>
               <h3 className="font-display text-lg text-foreground mb-3">{f.title}</h3>
               <p className="font-body text-sm text-muted-foreground leading-relaxed">{f.description}</p>

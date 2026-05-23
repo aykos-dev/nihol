@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Phone, ArrowLeft, MessageCircle, Clock3, CircleCheck, ShieldCheck, UtensilsCrossed, Users } from "lucide-react";
 import { rooms } from "@/components/RoomSection";
 import niholLogo from "@/assets/nihol-logo.png";
 import patternBg from "@/assets/pattern-bg.png";
+import OptimizedImage from "@/components/media/OptimizedImage";
+import { toCdnMediaUrl } from "@/lib/cdn";
 
 const RoomServicePage = () => {
   const router = useRouter();
@@ -34,7 +35,7 @@ const RoomServicePage = () => {
     <div className="min-h-screen bg-forest-dark relative overflow-hidden">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.05]"
-        style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "360px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${toCdnMediaUrl(patternBg.src, { resourceType: "image" })})`, backgroundSize: "360px", backgroundRepeat: "repeat" }}
       />
       <div className="border-b border-cream/10 py-4 px-6">
         <div className="container mx-auto max-w-4xl flex items-center justify-between relative z-10">
@@ -45,7 +46,7 @@ const RoomServicePage = () => {
             <ArrowLeft className="w-4 h-4" />
             Orqaga
           </button>
-          <Image src={niholLogo} alt="NIHOL" className="h-11 md:h-12 w-auto" priority />
+          <OptimizedImage src={niholLogo} alt="NIHOL" className="h-11 md:h-12 w-auto" width={144} height={48} sizes="144px" priority />
           <div className="w-16" />
         </div>
       </div>
@@ -63,7 +64,14 @@ const RoomServicePage = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <Image src={room.image} alt={`${room.name} rasmi`} className="w-full h-64 md:h-80 object-cover" width={768} height={512} />
+              <OptimizedImage
+                src={room.image}
+                alt={`${room.name} rasmi`}
+                className="w-full h-64 md:h-80 object-cover"
+                width={768}
+                height={512}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </motion.div>
             <div className="flex flex-col justify-center">
               <span className="text-gold text-sm tracking-[0.3em] uppercase font-body mb-2">Tanlangan xona</span>

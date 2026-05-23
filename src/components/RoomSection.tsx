@@ -1,24 +1,26 @@
 "use client";
 
-import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import patternBg from "@/assets/pattern-bg.png";
-import room1 from "@/assets/1.jpg";
-import room2 from "@/assets/2.jpg";
-import room3 from "@/assets/3.jpg";
-import room4 from "@/assets/4.JPG";
-import room5 from "@/assets/5.JPG";
-import room6 from "@/assets/6.JPG";
-import room7 from "@/assets/7.JPG";
+import room1 from "@/assets/1.webp";
+import room2 from "@/assets/2.webp";
+import room3 from "@/assets/3.webp";
+import room4 from "@/assets/4.webp";
+import room5 from "@/assets/5.webp";
+import room6 from "@/assets/6.webp";
+import room7 from "@/assets/7.webp";
+import OptimizedImage from "@/components/media/OptimizedImage";
+import { toCdnMediaUrl } from "@/lib/cdn";
 
 export const rooms = [
-  { id: 1, name: "10-14 kishi", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room2.src, capacity: "10–14 kishi" },
-  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1.src, capacity: "15–18 kishi" },
-  { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3.src, capacity: "15–18 kishi" },
-  { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4.src, capacity: "10–12 kishi" },
-  { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5.src, capacity: "10–12 kishi" },
-  { id: 6, name: "8-10 kishi", description: "Shinam va xususiy xona", image: room6.src, capacity: "8–10 kishi" },
-  { id: 7, name: "10-12 kishi", description: "Bayramlar uchun hashamatli xona", image: room7.src, capacity: "10–12 kishi" },
+  { id: 1, name: "10-14 kishi", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room2, capacity: "10–14 kishi" },
+  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1, capacity: "15–18 kishi" },
+  { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3, capacity: "15–18 kishi" },
+  { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4, capacity: "10–12 kishi" },
+  { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5, capacity: "10–12 kishi" },
+  { id: 6, name: "8-10 kishi", description: "Shinam va xususiy xona", image: room6, capacity: "8–10 kishi" },
+  { id: 7, name: "10-12 kishi", description: "Bayramlar uchun hashamatli xona", image: room7, capacity: "10–12 kishi" },
 ];
 
 const RoomSection = () => {
@@ -28,7 +30,7 @@ const RoomSection = () => {
     <section id="rooms" className="py-24 md:py-32 bg-cream relative overflow-hidden">
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${toCdnMediaUrl(patternBg.src, { resourceType: "image" })})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
       />
 
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
@@ -68,19 +70,19 @@ const RoomCard = ({
   room,
   onSelect,
 }: {
-  room: typeof rooms[0];
+  room: typeof rooms[0] & { image: StaticImageData };
   onSelect: () => void;
 }) => (
   <div className="group">
     <div className="bg-forest-dark rounded-sm overflow-hidden">
       <div className="relative overflow-hidden aspect-[3/2]">
-        <Image
+        <OptimizedImage
           src={room.image}
           alt={room.name}
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           width={768}
           height={512}
-          loading="lazy"
+          sizes="(max-width: 768px) 50vw, 25vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/60 to-transparent" />
         <div className="absolute top-3 right-3 bg-gold/90 text-forest-dark px-2.5 py-0.5 text-xs font-body tracking-wider uppercase">

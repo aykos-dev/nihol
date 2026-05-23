@@ -1,76 +1,38 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import niholLogo from "@/assets/nihol-logo.png";
-import heroFallback from "@/assets/hero-fallback.jpg";
+import OptimizedImage from "@/components/media/OptimizedImage";
+import LazyVideo from "@/components/media/LazyVideo";
 
 const HeroSection = () => {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleCanPlay = () => setVideoLoaded(true);
-    const handleError = () => setVideoError(true);
-
-    video.addEventListener("canplaythrough", handleCanPlay);
-    video.addEventListener("error", handleError);
-
-    // Start loading
-    video.load();
-
-    return () => {
-      video.removeEventListener("canplaythrough", handleCanPlay);
-      video.removeEventListener("error", handleError);
-    };
-  }, []);
-
   return (
     <section id="home" className="relative h-screen w-full overflow-hidden">
-      {/* Preload fallback shown instantly */}
-      {/* <img
-        src={heroFallback.src}
-        alt="NIHOL Restaurant"
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-          videoLoaded && !videoError ? "opacity-0" : "opacity-100"
-        }`}
-        width={1920}
-        height={1080}
-        fetchPriority="high"
-      /> */}
-
-      {/* Video - fades in when ready */}
-      {!videoError && (
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className={`absolute inset-0 w-full h-full object-cover object-[center_35%] md:object-[center_30%] transition-opacity duration-1000 ${
-            videoLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <source src="/IMG_2104.mp4" type="video/mp4" />
-        </video>
-      )}
+      <LazyVideo
+        className="absolute inset-0 w-full h-full object-cover object-[center_35%] md:object-[center_30%]"
+        sources={[{ src: "/IMG_2104.mp4", type: "video/mp4" }]}
+        rootMargin="0px"
+      />
 
       <div className="absolute inset-0 gradient-hero-overlay" />
 
       <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
-        <motion.img
-          src={niholLogo.src}
-          alt="NIHOL"
+        <motion.div
           className="w-48 md:w-64 mb-8"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-        />
+        >
+          <OptimizedImage
+            src={niholLogo}
+            alt="NIHOL"
+            width={480}
+            height={240}
+            priority
+            className="w-full h-auto"
+            sizes="(max-width: 768px) 192px, 256px"
+          />
+        </motion.div>
 
         <motion.h1
           className="font-display text-4xl md:text-6xl lg:text-6xl text-cream tracking-wide"

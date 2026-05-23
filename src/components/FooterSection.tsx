@@ -1,5 +1,6 @@
 import niholLogo from "@/assets/nihol-logo.png";
 import { Send } from "lucide-react";
+import OptimizedImage from "@/components/media/OptimizedImage";
 
 const InstagramIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -14,7 +15,14 @@ const FooterSection = () => {
     <footer className="bg-forest-dark border-t border-accent/10 py-12">
       <div className="container mx-auto px-6 max-w-5xl">
         <div className="flex flex-col items-center text-center">
-          <img src={niholLogo.src} alt="NIHOL" className="h-14 md:h-16 w-auto mb-3" loading="lazy" />
+          <OptimizedImage
+            src={niholLogo}
+            alt="NIHOL"
+            width={160}
+            height={64}
+            className="h-14 md:h-16 w-auto mb-3"
+            sizes="160px"
+          />
           <p className="font-editorial text-cream/40 italic text-sm mb-6">
             Restourant
           </p>

@@ -3,7 +3,7 @@ import path from "node:path";
 import { MENU_DISH_ROWS } from "@/data/menuDishMeta";
 
 const MENU_ROOT = path.join(process.cwd(), "src", "assets", "menu");
-const SUPPORTED_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp"]);
+const SUPPORTED_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
 function normalizeSegment(segment: string): string {
   return segment.trim().toLowerCase();
@@ -31,6 +31,7 @@ function rowIndexInFolder(rel: string, folderPrefix: string): number {
 function contentTypeFromExtension(ext: string): string {
   if (ext === ".png") return "image/png";
   if (ext === ".webp") return "image/webp";
+  if (ext === ".avif") return "image/avif";
   return "image/jpeg";
 }
 

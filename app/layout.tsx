@@ -4,8 +4,13 @@ import AppProviders from "@/components/AppProviders";
 import "@/index.css";
 
 export const metadata: Metadata = {
-  title: "Nihol Elegance",
+  title: "Nihol Restaurant",
   description: "Nihol restaurant menu and room service",
+  icons: {
+    icon: "/favicon-n.svg",
+    shortcut: "/favicon-n.svg",
+    apple: "/favicon-n.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

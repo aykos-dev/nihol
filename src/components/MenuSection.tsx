@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import type { StaticImageData } from "next/image";
 
 import catSalads from "@/assets/cat/cat-salads.jpg";
 import catAssorti from "@/assets/cat/assorti-3.jpg";
@@ -21,6 +22,8 @@ import dessertBaklava from "@/assets/dessert-baklava.jpg";
 import dessertFondant from "@/assets/dessert-fondant.jpg";
 import patternBg from "@/assets/pattern-bg.png";
 import { MENU_DISH_ROWS, type MenuDishRow } from "@/data/menuDishMeta";
+import OptimizedImage from "@/components/media/OptimizedImage";
+import { toCdnMediaUrl } from "@/lib/cdn";
 
 type SubDish = { id: string; name: string; image: string; price: string };
 type PreviewImage = { src: string; alt: string };
@@ -38,7 +41,7 @@ function normalizeDishName(rawName: string): string {
   const cleaned = withoutLeadingNumber.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
   if (!cleaned) return rawName;
   const titled = toTitleCaseWords(cleaned);
-  return titled === "Brukallo" ? "Brukkallo" : titled;
+  return titled;
 }
 
 function extractLeadingNumber(rawName: string): number | null {
@@ -61,7 +64,7 @@ function compareDishOrder(a: SubDish, b: SubDish): number {
 }
 
 function applySaladPriority(dishes: SubDish[]): SubDish[] {
-  const forcedLast = ["Achichik Chuchuk", "Ajabsanda", "Bir Zumda", "Brukkallo"] as const;
+  const forcedLast = ["Achichuk", "Ajob Sanda", "Bir Zumda", "Rukolle"] as const;
   const firstName = "Avokado Salati";
 
   const first = dishes.find((dish) => dish.name === firstName);
@@ -78,7 +81,7 @@ function menuImageUrlFromRel(rel: string): string {
     .split("/")
     .map((segment) => encodeURIComponent(segment))
     .join("/");
-  return `/api/menu-image/${encodedRel}`;
+  return toCdnMediaUrl(`/api/menu-image/${encodedRel}`, { resourceType: "image" });
 }
 
 function dishesFromRows(rows: readonly MenuDishRow[], opts?: { saladMode?: boolean }): SubDish[] {
@@ -112,7 +115,7 @@ function rowsByPrefix(prefix: string): MenuDishRow[] {
 
 type Category = {
   name: string;
-  image: string;
+  image: string | StaticImageData;
   type: "normal" | "bar" | "dessert";
   dishes?: SubDish[];
   barSections?: BarSubSection[];
@@ -185,16 +188,16 @@ function buildCategories(): Category[] {
   const setDishes = dishesFromRows(rowsByPrefix("set/"));
 
   return [
-    { name: "Salatlar", image: catSalads.src, type: "normal", dishes: saladDishes },
-    { name: "Assorti", image: catAssorti.src, type: "normal", dishes: assortiDishes },
-    { name: "Bulon", image: catShorva.src, type: "normal", dishes: bulonDishes },
-    { name: "Somsa", image: catSomsa.src, type: "normal", dishes: somsaDishes },
-    { name: "Tovuq taomlari", image: catChicken.src, type: "normal", dishes: chickenDishes },
-    { name: "Baliq taomlari", image: catFish.src, type: "normal", dishes: fishDishes },
-    { name: "Mangal taomlari", image: catMangal.src, type: "normal", dishes: mangalDishes },
-    { name: "Setlar", image: catSetlar.src, type: "normal", dishes: normalizeSetDishes(setDishes) },
-    { name: "Bar", image: catBar.src, type: "bar", barSections },
-    { name: "Shirinliklar", image: catShirinlik.src, type: "dessert", dishes: dessertDishes },
+    { name: "Salatlar", image: catSalads, type: "normal", dishes: saladDishes },
+    { name: "Assorti", image: catAssorti, type: "normal", dishes: assortiDishes },
+    { name: "Bulon", image: catShorva, type: "normal", dishes: bulonDishes },
+    { name: "Somsa", image: catSomsa, type: "normal", dishes: somsaDishes },
+    { name: "Tovuq taomlari", image: catChicken, type: "normal", dishes: chickenDishes },
+    { name: "Baliq taomlari", image: catFish, type: "normal", dishes: fishDishes },
+    { name: "Mangal taomlari", image: catMangal, type: "normal", dishes: mangalDishes },
+    { name: "Setlar", image: catSetlar, type: "normal", dishes: normalizeSetDishes(setDishes) },
+    { name: "Bar", image: catBar, type: "bar", barSections },
+    { name: "Shirinliklar", image: catShirinlik, type: "dessert", dishes: dessertDishes },
   ];
 }
 
@@ -212,15 +215,12 @@ function LazyMenuImage({
 }) {
   return (
     <div className="relative w-full h-full min-h-0 bg-forest-dark/30">
-      <img
+      <OptimizedImage
         src={src}
         alt={alt}
         className={className}
-        decoding="async"
-        loading="lazy"
-        fetchPriority="low"
-        width={480}
-        height={480}
+        fill
+        sizes="(max-width: 768px) 33vw, 20vw"
       />
     </div>
   );
@@ -331,7 +331,7 @@ const MenuSection = () => {
         {/* Pattern decoration */}
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+          style={{ backgroundImage: `url(${toCdnMediaUrl(patternBg.src, { resourceType: "image" })})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
         />
 
         <div className="container mx-auto px-6 max-w-6xl relative z-10" ref={ref}>
@@ -456,16 +456,22 @@ const MenuSection = () => {
                 <p className="font-display text-gold text-base md:text-lg">{selectedImage.alt}</p>
               </div>
               <div className="relative w-full max-h-[86vh] overflow-hidden rounded-sm">
-                <motion.img
-                  src={selectedImage.src}
-                  alt={selectedImage.alt}
-                  className="w-full h-full max-h-[84vh] object-contain"
-                  decoding="async"
-                  loading="eager"
+                <motion.div
+                  className="w-full h-full"
                   initial={{ scale: 0.94, opacity: 0.7 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.28, ease: "easeOut" }}
-                />
+                >
+                  <OptimizedImage
+                    src={selectedImage.src}
+                    alt={selectedImage.alt}
+                    className="w-full h-full max-h-[84vh] object-contain"
+                    width={1600}
+                    height={1200}
+                    loading="eager"
+                    sizes="100vw"
+                  />
+                </motion.div>
               </div>
             </motion.div>
           </motion.div>
@@ -494,15 +500,12 @@ const CategoryCard = ({
     onClick={onClick}
   >
     <div className="relative overflow-hidden rounded-sm aspect-square">
-      <img
+      <OptimizedImage
         src={cat.image}
         alt={cat.name}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        loading="lazy"
-        decoding="async"
-        fetchPriority="low"
-        width={768}
-        height={768}
+        className="object-cover transition-transform duration-700 group-hover:scale-110"
+        fill
+        sizes="(max-width: 768px) 50vw, 25vw"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-forest-dark/80 via-forest-dark/20 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">

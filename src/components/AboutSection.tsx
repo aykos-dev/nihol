@@ -2,7 +2,8 @@
 
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import buildingImg from "@/assets/gallery/nihol-building.jpg";
+import buildingImg from "@/assets/gallery/nihol-building.webp";
+import OptimizedImage from "@/components/media/OptimizedImage";
 
 const AboutSection = () => {
   const ref = useRef(null);
@@ -25,12 +26,15 @@ const AboutSection = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <img
-              src={buildingImg.src}
-              alt="Nihol restoran ichki ko'rinishi"
-              className="w-full h-[460px] md:h-[620px] object-cover"
-              loading="lazy"
-            />
+            <div className="relative w-full h-[460px] md:h-[620px]">
+              <OptimizedImage
+                src={buildingImg}
+                alt="Nihol restoran ichki ko'rinishi"
+                className="object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
             <div className="absolute inset-0 bg-forest-dark/10" />
           </motion.div>
 

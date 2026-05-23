@@ -2,29 +2,32 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
+import type { StaticImageData } from "next/image";
 import patternBg from "@/assets/pattern-bg.png";
-import img1835 from "@/assets/gallery/IMG_1835.jpg";
-import img1840 from "@/assets/gallery/IMG_1840.jpg";
-import img1849 from "@/assets/gallery/IMG_1849.jpg";
-import img1852 from "@/assets/gallery/IMG_1852.jpg";
-import img1855 from "@/assets/gallery/IMG_1855.jpg";
-import img1870 from "@/assets/gallery/IMG_1870.jpg";
-import buildingImg from "@/assets/gallery/nihol-building.jpg";
-import coasterImg from "@/assets/gallery/nihol-coaster.png";
-import interiorImg from "@/assets/gallery/nihol-interior.png";
+import img1835 from "@/assets/gallery/IMG_1835.webp";
+import img1840 from "@/assets/gallery/IMG_1840.webp";
+import img1849 from "@/assets/gallery/IMG_1849.webp";
+import img1852 from "@/assets/gallery/IMG_1852.webp";
+import img1855 from "@/assets/gallery/IMG_1855.webp";
+import img1870 from "@/assets/gallery/IMG_1870.webp";
+import buildingImg from "@/assets/gallery/nihol-building.webp";
+import coasterImg from "@/assets/gallery/nihol-coaster.webp";
+import interiorImg from "@/assets/gallery/nihol-interior.webp";
+import OptimizedImage from "@/components/media/OptimizedImage";
+import { toCdnMediaUrl } from "@/lib/cdn";
 
-type GalleryImage = { src: string; alt: string };
+type GalleryImage = { src: StaticImageData; alt: string };
 
 const galleryImages: GalleryImage[] = [
-  { src: buildingImg.src, alt: "Galereya nihol-building" },
-  { src: coasterImg.src, alt: "Galereya nihol-coaster" },
-  { src: img1835.src, alt: "Galereya IMG_1835" },
-  { src: img1840.src, alt: "Galereya IMG_1840" },
-  { src: img1849.src, alt: "Galereya IMG_1849" },
-  { src: img1852.src, alt: "Galereya IMG_1852" },
-  { src: img1855.src, alt: "Galereya IMG_1855" },
-  { src: img1870.src, alt: "Galereya IMG_1870" },
-  { src: interiorImg.src, alt: "Galereya nihol-interior" },
+  { src: buildingImg, alt: "Galereya nihol-building" },
+  { src: coasterImg, alt: "Galereya nihol-coaster" },
+  { src: img1835, alt: "Galereya IMG_1835" },
+  { src: img1840, alt: "Galereya IMG_1840" },
+  { src: img1849, alt: "Galereya IMG_1849" },
+  { src: img1852, alt: "Galereya IMG_1852" },
+  { src: img1855, alt: "Galereya IMG_1855" },
+  { src: img1870, alt: "Galereya IMG_1870" },
+  { src: interiorImg, alt: "Galereya nihol-interior" },
 ];
 
 function rotateImages(offset: number): GalleryImage[] {
@@ -70,18 +73,23 @@ function GalleryCard({
   return (
     <div className={className}>
       <AnimatePresence mode="wait">
-        <motion.img
-          key={current.src}
-          src={current.src}
-          alt={current.alt}
-          className="w-full h-full object-cover rounded-sm"
-          loading={eager ? "eager" : "lazy"}
-          decoding="async"
+        <motion.div
+          key={current.src.src}
+          className="relative w-full h-full"
           initial={{ opacity: 0, y: 10, scale: 1.01 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.99 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-        />
+        >
+          <OptimizedImage
+            src={current.src}
+            alt={current.alt}
+            className="object-cover rounded-sm"
+            fill
+            priority={Boolean(eager)}
+            sizes={eager ? "(max-width: 768px) 100vw, 60vw" : "(max-width: 768px) 50vw, 25vw"}
+          />
+        </motion.div>
       </AnimatePresence>
     </div>
   );
@@ -95,7 +103,7 @@ const GallerySection = () => {
     <section id="gallery" className="py-24 md:py-32 bg-cream-dark relative overflow-hidden">
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url(${patternBg.src})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${toCdnMediaUrl(patternBg.src, { resourceType: "image" })})`, backgroundSize: "400px", backgroundRepeat: "repeat" }}
       />
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10" ref={ref as React.RefObject<HTMLDivElement>}>
