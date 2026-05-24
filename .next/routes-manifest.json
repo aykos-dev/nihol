@@ -50,6 +50,12 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/icon-n.ico",
+      "regex": "^/icon\\-n\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/icon\\-n\\.ico(?:/)?$"
+    },
+    {
       "page": "/icon.svg",
       "regex": "^/icon\\.svg(?:/)?$",
       "routeKeys": {},

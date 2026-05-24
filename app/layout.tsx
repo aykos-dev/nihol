@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     description: "Nihol restaurant menu and room service",
   },
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    shortcut: ["/icon.svg"],
-    apple: "/icon.svg",
+    icon: [{ url: "/icon-n.ico", type: "image/x-icon" }],
+    shortcut: ["/icon-n.ico"],
+    apple: "/icon-n.ico",
   },
 };
 

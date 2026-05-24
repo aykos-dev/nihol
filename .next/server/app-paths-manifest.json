@@ -1,4 +1,5 @@
 {
+  "/icon-n.ico/route": "app/icon-n.ico/route.js",
   "/_not-found/page": "app/_not-found/page.js",
   "/api/menu-image/[...slug]/route": "app/api/menu-image/[...slug]/route.js",
   "/icon.svg/route": "app/icon.svg/route.js",
