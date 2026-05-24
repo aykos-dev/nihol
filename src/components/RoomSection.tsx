@@ -3,9 +3,9 @@
 import type { StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import patternBg from "@/assets/pattern-bg.png";
-import room1 from "@/assets/1.webp";
-import room2 from "@/assets/2.webp";
-import room3 from "@/assets/3.webp";
+import room1 from "@/assets/1-fixed.webp";
+import room2 from "@/assets/2-fixed.webp";
+import room3 from "@/assets/3-fixed.webp";
 import room4 from "@/assets/4.webp";
 import room5 from "@/assets/5.webp";
 import room6 from "@/assets/6.webp";
@@ -15,7 +15,7 @@ import { toCdnMediaUrl } from "@/lib/cdn";
 
 export const rooms = [
   { id: 1, name: "10-14 kishi", description: "Oilaviy yig'ilishlar uchun qulay xona", image: room2, capacity: "10–14 kishi" },
-  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1, capacity: "15–18 kishi" },
+  { id: 2, name: "15–18 kishi", description: "Keng va zamonaviy xona", image: room1, capacity: "15–18 kishi", imageClassName: "rotate-180" },
   { id: 3, name: "15-18 kishi", description: "Biznes uchrashuvlar uchun ideal", image: room3, capacity: "15–18 kishi" },
   { id: 4, name: "10-12 kishi", description: "Yoqimli muhitdagi xona", image: room4, capacity: "10–12 kishi" },
   { id: 5, name: "10-12 kishi", description: "Do'stlar davrasiga mo'ljallangan", image: room5, capacity: "10–12 kishi" },
@@ -70,7 +70,7 @@ const RoomCard = ({
   room,
   onSelect,
 }: {
-  room: typeof rooms[0] & { image: StaticImageData };
+  room: typeof rooms[0] & { image: StaticImageData; imageClassName?: string };
   onSelect: () => void;
 }) => (
   <div className="group">
@@ -79,7 +79,7 @@ const RoomCard = ({
         <OptimizedImage
           src={room.image}
           alt={room.name}
-          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className={`w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${room.imageClassName ?? ""}`}
           width={768}
           height={512}
           sizes="(max-width: 768px) 50vw, 25vw"
