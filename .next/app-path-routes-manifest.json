@@ -1,6 +1,7 @@
 {
-  "/api/menu-image/[...slug]/route": "/api/menu-image/[...slug]",
   "/_not-found/page": "/_not-found",
-  "/room-service/[roomId]/page": "/room-service/[roomId]",
-  "/page": "/"
+  "/api/menu-image/[...slug]/route": "/api/menu-image/[...slug]",
+  "/icon.svg/route": "/icon.svg",
+  "/page": "/",
+  "/room-service/[roomId]/page": "/room-service/[roomId]"
 }

@@ -4,8 +4,25 @@ import AppProviders from "@/components/AppProviders";
 import "@/index.css";
 
 export const metadata: Metadata = {
-  title: "Nihol Restaurant",
+  metadataBase: new URL("https://www.niholfamilyrestaurant.uz"),
+  title: {
+    default: "Nihol Restaurant",
+    template: "%s | Nihol Restaurant",
+  },
   description: "Nihol restaurant menu and room service",
+  applicationName: "Nihol Restaurant",
+  openGraph: {
+    title: "Nihol Restaurant",
+    description: "Nihol restaurant menu and room service",
+    type: "website",
+    siteName: "Nihol Restaurant",
+    url: "https://www.niholfamilyrestaurant.uz",
+  },
+  twitter: {
+    card: "summary",
+    title: "Nihol Restaurant",
+    description: "Nihol restaurant menu and room service",
+  },
   icons: {
     icon: "/favicon-n.svg",
     shortcut: "/favicon-n.svg",
